@@ -45,86 +45,19 @@ class TransactionTile extends StatelessWidget {
           horizontal: AppSizes.p16,
           vertical: AppSizes.p12,
         ),
-        child: Row(
-          children: [
-            // Transaction icon bubble
-            Container(
-              width: 42,
-              height: 42,
-              decoration: BoxDecoration(
-                color: details.bubbleColor.withValues(alpha: 0.12),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                details.icon,
-                color: details.bubbleColor,
-                size: 20,
-              ),
-            ),
-            AppSizes.gapW16,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final compact = constraints.maxWidth < 380;
 
-            // Description, category, and date
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    transaction.description?.isNotEmpty == true
-                        ? transaction.description!
-                        : details.typeName,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  AppSizes.gapH4,
-                  Row(
-                    children: [
-                      Text(
-                        formattedDate,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
-                        ),
-                      ),
-                      if (transaction.category != null && transaction.category!.isNotEmpty) ...[
-                        Flexible(
-                          child: Text(
-                            '  •  ${transaction.category}',
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-                      if (businessName != null) ...[
-                        Flexible(
-                          child: Text(
-                            '  •  $businessName',
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: theme.colorScheme.primary,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            AppSizes.gapW12,
+            final metaDateStyle = theme.textTheme.bodySmall?.copyWith(
+              color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
+            );
 
-            // Amount & Indicators
-            ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 120),
+            final amountWidget = ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: compact ? constraints.maxWidth : 120),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment:
+                    compact ? CrossAxisAlignment.start : CrossAxisAlignment.end,
                 children: [
                   FittedBox(
                     fit: BoxFit.scaleDown,
@@ -146,8 +79,101 @@ class TransactionTile extends StatelessWidget {
                   ],
                 ],
               ),
-            ),
-          ],
+            );
+
+            final detailWidget = Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  transaction.description?.isNotEmpty == true
+                      ? transaction.description!
+                      : details.typeName,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                AppSizes.gapH4,
+                Wrap(
+                  spacing: AppSizes.p8,
+                  runSpacing: AppSizes.p4,
+                  children: [
+                    Text(formattedDate, style: metaDateStyle),
+                    if (transaction.category != null && transaction.category!.isNotEmpty)
+                      Text(
+                        '• ${transaction.category}',
+                        style: metaDateStyle,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    if (businessName != null)
+                      Text(
+                        '• $businessName',
+                        style: metaDateStyle?.copyWith(
+                          color: theme.colorScheme.primary,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                  ],
+                ),
+              ],
+            );
+
+            if (compact) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        width: 42,
+                        height: 42,
+                        decoration: BoxDecoration(
+                          color: details.bubbleColor.withValues(alpha: 0.12),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          details.icon,
+                          color: details.bubbleColor,
+                          size: 20,
+                        ),
+                      ),
+                      AppSizes.gapW12,
+                      Expanded(child: detailWidget),
+                    ],
+                  ),
+                  AppSizes.gapH8,
+                  amountWidget,
+                ],
+              );
+            }
+
+            return Row(
+              children: [
+                Container(
+                  width: 42,
+                  height: 42,
+                  decoration: BoxDecoration(
+                    color: details.bubbleColor.withValues(alpha: 0.12),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    details.icon,
+                    color: details.bubbleColor,
+                    size: 20,
+                  ),
+                ),
+                AppSizes.gapW16,
+                Expanded(child: detailWidget),
+                AppSizes.gapW12,
+                amountWidget,
+              ],
+            );
+          },
         ),
       ),
     );

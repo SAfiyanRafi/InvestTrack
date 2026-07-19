@@ -73,6 +73,28 @@ dev_dependencies:
 
   # Lints
   flutter_lints: ^3.0.0
+  flutter_launcher_icons: ^0.14.3
+  flutter_native_splash: ^2.4.1
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: InvestTrack.png
+  min_sdk_android: 21
+  remove_alpha_ios: true
+
+flutter_native_splash:
+  color: "#090D16"
+  image: assets/branding/splash_investtrack.png
+  android: true
+  ios: true
+  web: true
+  color_dark: "#090D16"
+  image_dark: assets/branding/splash_investtrack.png
+  android_12:
+    image: assets/branding/splash_investtrack.png
+    color: "#090D16"
+    icon_background_color: "#090D16"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
