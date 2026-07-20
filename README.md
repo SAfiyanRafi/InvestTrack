@@ -25,5 +25,3 @@ Go Router
 Material Design 3
 
 Current Status
-
-Phase 8 Complete
