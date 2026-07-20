@@ -23,5 +23,3 @@ Riverpod
 Isar Database
 Go Router
 Material Design 3
-
-Current Status
