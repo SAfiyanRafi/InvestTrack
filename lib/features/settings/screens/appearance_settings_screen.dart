@@ -11,7 +11,7 @@ class AppearanceSettingsScreen extends ConsumerWidget {
   const AppearanceSettingsScreen({super.key});
 
   static const _supportedCurrencies = ['PKR', 'USD', 'EUR', 'GBP', 'AED'];
-  static const _themeOptions =['system', 'light', 'dark'];
+  static const _themeOptions = ['system', 'light', 'dark'];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
