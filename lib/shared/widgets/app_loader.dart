@@ -5,11 +5,7 @@ import '../../core/constants/app_sizes.dart';
 
 /// A premium, animated loader. Supports both inline states and fullscreen modal blur screens.
 class AppLoader extends StatelessWidget {
-  const AppLoader({
-    this.message,
-    this.isFullscreen = false,
-    super.key,
-  });
+  const AppLoader({this.message, this.isFullscreen = false, super.key});
 
   /// Optional text to show below the progress indicator
   final String? message;
@@ -40,7 +36,9 @@ class AppLoader extends StatelessWidget {
             ),
             child: CircularProgressIndicator(
               strokeWidth: 3,
-              valueColor: AlwaysStoppedAnimation<Color>(theme.colorScheme.primary),
+              valueColor: AlwaysStoppedAnimation<Color>(
+                theme.colorScheme.primary,
+              ),
             ),
           ),
           if (message != null) ...[
@@ -50,7 +48,9 @@ class AppLoader extends StatelessWidget {
               textAlign: TextAlign.center,
               style: theme.textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.w500,
-                color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
+                color: isDark
+                    ? AppColors.darkTextSecondary
+                    : AppColors.lightTextSecondary,
               ),
             ),
           ],
@@ -68,8 +68,11 @@ class AppLoader extends StatelessWidget {
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
                 child: Container(
-                  color: (isDark ? AppColors.darkBackground : AppColors.lightBackground)
-                      .withValues(alpha: 0.6),
+                  color:
+                      (isDark
+                              ? AppColors.darkBackground
+                              : AppColors.lightBackground)
+                          .withValues(alpha: 0.6),
                 ),
               ),
             ),

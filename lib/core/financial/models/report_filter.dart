@@ -87,8 +87,9 @@ class ReportFilter {
   }) {
     return ReportFilter(
       period: period ?? this.period,
-      referenceDate:
-          clearReferenceDate ? null : (referenceDate ?? this.referenceDate),
+      referenceDate: clearReferenceDate
+          ? null
+          : (referenceDate ?? this.referenceDate),
       startDate: clearStartDate ? null : (startDate ?? this.startDate),
       endDate: clearEndDate ? null : (endDate ?? this.endDate),
       businessId: clearBusinessId ? null : (businessId ?? this.businessId),

@@ -60,7 +60,8 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
     final businesses = asyncBusinesses.value ?? [];
     final businessMap = {for (final b in businesses) b.id: b.name};
 
-    final isFiltering = filterState.searchQuery.isNotEmpty ||
+    final isFiltering =
+        filterState.searchQuery.isNotEmpty ||
         filterState.typeFilter != null ||
         filterState.businessIdFilter != null;
 
@@ -110,9 +111,13 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
           ),
 
           // Active filter summary chips
-          if (filterState.typeFilter != null || filterState.businessIdFilter != null)
+          if (filterState.typeFilter != null ||
+              filterState.businessIdFilter != null)
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSizes.p16, vertical: AppSizes.p4),
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSizes.p16,
+                vertical: AppSizes.p4,
+              ),
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
@@ -121,7 +126,9 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                       Padding(
                         padding: const EdgeInsets.only(right: AppSizes.p8),
                         child: InputChip(
-                          label: Text(_capitalize(filterState.typeFilter!.name)),
+                          label: Text(
+                            _capitalize(filterState.typeFilter!.name),
+                          ),
                           onDeleted: () => filterNotifier.setTypeFilter(null),
                         ),
                       ),
@@ -129,8 +136,12 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                       Padding(
                         padding: const EdgeInsets.only(right: AppSizes.p8),
                         child: InputChip(
-                          label: Text(businessMap[filterState.businessIdFilter] ?? 'Business'),
-                          onDeleted: () => filterNotifier.setBusinessIdFilter(null),
+                          label: Text(
+                            businessMap[filterState.businessIdFilter] ??
+                                'Business',
+                          ),
+                          onDeleted: () =>
+                              filterNotifier.setBusinessIdFilter(null),
                         ),
                       ),
                   ],
@@ -141,8 +152,10 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
           // Ledger timeline items
           Expanded(
             child: asyncTransactions.when(
-              loading: () => const AppLoader(message: 'Loading ledger records...'),
-              error: (err, stack) => Center(child: Text('Error loading transactions: $err')),
+              loading: () =>
+                  const AppLoader(message: 'Loading ledger records...'),
+              error: (err, stack) =>
+                  Center(child: Text('Error loading transactions: $err')),
               data: (transactions) {
                 if (transactions.isEmpty) {
                   return Center(
@@ -154,7 +167,9 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                           Icon(
                             Icons.receipt_long_outlined,
                             size: 64,
-                            color: isDark ? AppColors.darkBorder : AppColors.lightBorder,
+                            color: isDark
+                                ? AppColors.darkBorder
+                                : AppColors.lightBorder,
                           ),
                           AppSizes.gapH16,
                           Text(
@@ -172,13 +187,16 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                                 : 'Log your first private investment event using the action button.',
                             textAlign: TextAlign.center,
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
+                              color: isDark
+                                  ? AppColors.darkTextSecondary
+                                  : AppColors.lightTextSecondary,
                             ),
                           ),
                           if (!isFiltering) ...[
                             AppSizes.gapH20,
                             FilledButton.icon(
-                              onPressed: () => context.push('/transactions/new'),
+                              onPressed: () =>
+                                  context.push('/transactions/new'),
                               icon: const Icon(Icons.add),
                               label: const Text('Create Transaction'),
                             ),
@@ -192,7 +210,8 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                 return ListView.separated(
                   padding: const EdgeInsets.all(AppSizes.p16),
                   itemCount: transactions.length,
-                  separatorBuilder: (context, index) => const Divider(height: 1, indent: 70),
+                  separatorBuilder: (context, index) =>
+                      const Divider(height: 1, indent: 70),
                   itemBuilder: (context, index) {
                     final tx = transactions[index];
                     return AppCard(
@@ -200,7 +219,8 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                       child: TransactionTile(
                         transaction: tx,
                         businessName: businessMap[tx.businessId],
-                        onTap: () => context.push('/transactions/${tx.id}/edit'),
+                        onTap: () =>
+                            context.push('/transactions/${tx.id}/edit'),
                       ),
                     );
                   },
@@ -233,8 +253,10 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
         return Consumer(
           builder: (context, ref, child) {
             final filterState = ref.watch(transactionFilterNotifierProvider);
-            final filterNotifier = ref.read(transactionFilterNotifierProvider.notifier);
-            
+            final filterNotifier = ref.read(
+              transactionFilterNotifierProvider.notifier,
+            );
+
             final asyncBusinesses = ref.watch(watchBusinessesProvider);
             final businesses = asyncBusinesses.value ?? [];
 
@@ -268,7 +290,9 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                   // Business filter dropdown
                   Text(
                     'Business Profile',
-                    style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   AppSizes.gapH8,
                   DropdownButtonFormField<int?>(
@@ -277,7 +301,9 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                     menuMaxHeight: 360,
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: isDark ? AppColors.darkSurfaceCard : AppColors.lightSurfaceCard,
+                      fillColor: isDark
+                          ? AppColors.darkSurfaceCard
+                          : AppColors.lightSurfaceCard,
                       hintText: 'All Businesses',
                     ),
                     items: [
@@ -305,7 +331,9 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                   // Transaction Type filter dropdown
                   Text(
                     'Transaction Type',
-                    style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   AppSizes.gapH8,
                   DropdownButtonFormField<TransactionType?>(
@@ -314,7 +342,9 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
                     menuMaxHeight: 360,
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: isDark ? AppColors.darkSurfaceCard : AppColors.lightSurfaceCard,
+                      fillColor: isDark
+                          ? AppColors.darkSurfaceCard
+                          : AppColors.lightSurfaceCard,
                       hintText: 'All Types',
                     ),
                     items: [

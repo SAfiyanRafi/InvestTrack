@@ -37,8 +37,7 @@ class DashboardData {
   final int totalBusinessCount;
 
   /// Returns true when no businesses or transactions have been recorded.
-  bool get hasNoData =>
-      totalBusinessCount == 0 && recentTransactions.isEmpty;
+  bool get hasNoData => totalBusinessCount == 0 && recentTransactions.isEmpty;
 
   /// An empty dashboard — shown on first launch before any data is entered.
   static final DashboardData empty = DashboardData(

@@ -42,8 +42,9 @@ DashboardData _buildDashboardData(
   final monthlySnapshot = buildMonthlySnapshot(transactions, DateTime.now());
   final rankings = buildBusinessPerformances(businesses, transactions);
   final recentTransactions = buildRecentTransactions(transactions);
-  final activeBusinessCount =
-      businesses.where((b) => b.status == 'Active').length;
+  final activeBusinessCount = businesses
+      .where((b) => b.status == 'Active')
+      .length;
 
   return DashboardData(
     summary: summary,

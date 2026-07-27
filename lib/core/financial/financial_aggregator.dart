@@ -81,8 +81,9 @@ List<BusinessPerformance> buildBusinessPerformances(
   bool sortByProfit = true,
 }) {
   final rankings = businesses.map((business) {
-    final businessTx =
-        transactions.where((t) => t.businessId == business.id).toList();
+    final businessTx = transactions
+        .where((t) => t.businessId == business.id)
+        .toList();
     return BusinessPerformance(
       business: business,
       invested: businessTx.calculateTotalInvested(),
@@ -103,7 +104,8 @@ List<Transaction> buildRecentTransactions(
   Iterable<Transaction> transactions, {
   int limit = 10,
 }) {
-  final sorted = transactions.toList()..sort((a, b) => b.date.compareTo(a.date));
+  final sorted = transactions.toList()
+    ..sort((a, b) => b.date.compareTo(a.date));
   return sorted.take(limit).toList();
 }
 
@@ -113,7 +115,11 @@ List<TimeSeriesPoint> buildPortfolioValueSeries(
   DateTime? start,
   DateTime? end,
 }) {
-  final months = _buildContinuousMonthRange(transactions, start: start, end: end);
+  final months = _buildContinuousMonthRange(
+    transactions,
+    start: start,
+    end: end,
+  );
   final txList = transactions.toList();
 
   return months.map((month) {
@@ -131,7 +137,11 @@ List<TimeSeriesPoint> buildPortfolioRoiSeries(
   DateTime? start,
   DateTime? end,
 }) {
-  final months = _buildContinuousMonthRange(transactions, start: start, end: end);
+  final months = _buildContinuousMonthRange(
+    transactions,
+    start: start,
+    end: end,
+  );
   final txList = transactions.toList();
 
   return months.map((month) {
@@ -149,7 +159,11 @@ List<IncomeExpensePoint> buildIncomeExpenseSeries(
   DateTime? start,
   DateTime? end,
 }) {
-  final months = _buildContinuousMonthRange(transactions, start: start, end: end);
+  final months = _buildContinuousMonthRange(
+    transactions,
+    start: start,
+    end: end,
+  );
 
   return months.map((month) {
     final snapshot = buildMonthlySnapshot(transactions, month);
@@ -166,7 +180,11 @@ List<BreakdownEntry> buildInvestmentAllocation(
   List<Business> businesses,
   Iterable<Transaction> transactions,
 ) {
-  return buildBusinessPerformances(businesses, transactions, sortByProfit: false)
+  return buildBusinessPerformances(
+        businesses,
+        transactions,
+        sortByProfit: false,
+      )
       .where((performance) => performance.invested > 0)
       .map(
         (performance) => BreakdownEntry(
@@ -182,7 +200,11 @@ List<BreakdownEntry> buildProfitContribution(
   List<Business> businesses,
   Iterable<Transaction> transactions,
 ) {
-  return buildBusinessPerformances(businesses, transactions, sortByProfit: false)
+  return buildBusinessPerformances(
+        businesses,
+        transactions,
+        sortByProfit: false,
+      )
       .where((performance) => performance.netProfit > 0)
       .map(
         (performance) => BreakdownEntry(
@@ -206,7 +228,11 @@ List<BreakdownEntry> buildExpenseCategoryBreakdown(
     final category = (tx.category?.trim().isNotEmpty ?? false)
         ? tx.category!.trim()
         : (tx.type == TransactionType.tax ? 'Tax' : 'Uncategorized');
-    totalsByCategory.update(category, (value) => value + tx.amount, ifAbsent: () => tx.amount);
+    totalsByCategory.update(
+      category,
+      (value) => value + tx.amount,
+      ifAbsent: () => tx.amount,
+    );
   }
 
   return totalsByCategory.entries
@@ -243,13 +269,13 @@ List<DateTime> _buildContinuousMonthRange(
   final txList = transactions.toList();
   if (txList.isEmpty) return const [];
 
-  final sorted = txList.map((tx) => DateTime(tx.date.year, tx.date.month)).toList()..sort();
+  final sorted =
+      txList.map((tx) => DateTime(tx.date.year, tx.date.month)).toList()
+        ..sort();
   final rangeStart = start != null
       ? DateTime(start.year, start.month)
       : sorted.first;
-  final rangeEnd = end != null
-      ? DateTime(end.year, end.month)
-      : sorted.last;
+  final rangeEnd = end != null ? DateTime(end.year, end.month) : sorted.last;
 
   final months = <DateTime>[];
   var cursor = rangeStart;

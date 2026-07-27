@@ -2,12 +2,7 @@ import 'package:isar/isar.dart';
 
 part 'app_notification.g.dart';
 
-enum NotificationType {
-  informational,
-  success,
-  warning,
-  critical,
-}
+enum NotificationType { informational, success, warning, critical }
 
 enum NotificationCategory {
   financial,

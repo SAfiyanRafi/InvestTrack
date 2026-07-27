@@ -39,7 +39,10 @@ class IsarNotificationRepository implements NotificationRepository {
 
   @override
   Future<void> markAllAsRead() async {
-    final unread = await _isar.appNotifications.filter().isReadEqualTo(false).findAll();
+    final unread = await _isar.appNotifications
+        .filter()
+        .isReadEqualTo(false)
+        .findAll();
     if (unread.isEmpty) return;
 
     for (final item in unread) {
@@ -85,7 +88,11 @@ class IsarNotificationRepository implements NotificationRepository {
 
   @override
   Future<void> clearReadNotifications() async {
-    final read = await _isar.appNotifications.filter().isReadEqualTo(true).idProperty().findAll();
+    final read = await _isar.appNotifications
+        .filter()
+        .isReadEqualTo(true)
+        .idProperty()
+        .findAll();
     if (read.isEmpty) return;
 
     await _isar.writeTxn(() async {

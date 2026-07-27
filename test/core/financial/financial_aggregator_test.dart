@@ -139,20 +139,32 @@ void main() {
         _business(id: 2, name: 'Beta'),
       ];
       final transactions = [
-        _tx(TransactionType.investment, 1000, date: DateTime(2025, 1, 1))..businessId = 1,
-        _tx(TransactionType.additionalInvestment, 500, date: DateTime(2025, 1, 2))..businessId = 2,
-        _tx(TransactionType.income, 300, date: DateTime(2025, 1, 3))..businessId = 1,
+        _tx(TransactionType.investment, 1000, date: DateTime(2025, 1, 1))
+          ..businessId = 1,
+        _tx(
+          TransactionType.additionalInvestment,
+          500,
+          date: DateTime(2025, 1, 2),
+        )..businessId = 2,
+        _tx(TransactionType.income, 300, date: DateTime(2025, 1, 3))
+          ..businessId = 1,
         _tx(TransactionType.expense, 100, date: DateTime(2025, 1, 4))
           ..businessId = 1
           ..category = 'Utilities',
       ];
 
       final allocation = buildInvestmentAllocation(businesses, transactions);
-      final profitContribution = buildProfitContribution(businesses, transactions);
+      final profitContribution = buildProfitContribution(
+        businesses,
+        transactions,
+      );
       final expenseBreakdown = buildExpenseCategoryBreakdown(transactions);
       final txDistribution = buildTransactionTypeDistribution(transactions);
 
-      expect(allocation.map((entry) => entry.label), containsAll(['Alpha', 'Beta']));
+      expect(
+        allocation.map((entry) => entry.label),
+        containsAll(['Alpha', 'Beta']),
+      );
       expect(profitContribution.single.label, 'Alpha');
       expect(expenseBreakdown.single.label, 'Utilities');
       expect(txDistribution.first.value, greaterThan(0));

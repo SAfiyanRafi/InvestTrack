@@ -21,9 +21,17 @@ class AboutScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('About InvestTrack', style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+                Text(
+                  'About InvestTrack',
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 AppSizes.gapH8,
-                Text('A modern finance management app built for offline reliability and future-ready backups.', style: theme.textTheme.bodyMedium),
+                Text(
+                  'A modern finance management app built for offline reliability and future-ready backups.',
+                  style: theme.textTheme.bodyMedium,
+                ),
               ],
             ),
           ),
@@ -32,7 +40,12 @@ class AboutScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('App Version', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                Text(
+                  'App Version',
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 AppSizes.gapH8,
                 Text(_appVersion, style: theme.textTheme.bodyMedium),
               ],
@@ -43,9 +56,16 @@ class AboutScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Licenses', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                Text(
+                  'Licenses',
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 AppSizes.gapH8,
-                Text('Open source licenses for InvestTrack components will be shown here in a future update.'),
+                Text(
+                  'Open source licenses for InvestTrack components will be shown here in a future update.',
+                ),
               ],
             ),
           ),

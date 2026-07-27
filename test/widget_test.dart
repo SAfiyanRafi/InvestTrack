@@ -3,9 +3,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:investtrack/shared/widgets/app_button.dart';
 
 void main() {
-  testWidgets('AppButton renders text and triggers callback on tap', (WidgetTester tester) async {
+  testWidgets('AppButton renders text and triggers callback on tap', (
+    WidgetTester tester,
+  ) async {
     bool tapped = false;
-    
+
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(

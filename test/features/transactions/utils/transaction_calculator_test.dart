@@ -360,7 +360,11 @@ void main() {
       expect(TransactionType.other.affectsCashFlow, isFalse);
       for (final t in TransactionType.values) {
         if (t != TransactionType.other) {
-          expect(t.affectsCashFlow, isTrue, reason: '$t should affect cash flow');
+          expect(
+            t.affectsCashFlow,
+            isTrue,
+            reason: '$t should affect cash flow',
+          );
         }
       }
     });
@@ -371,10 +375,16 @@ void main() {
   group('Empty transaction list', () {
     const empty = <Transaction>[];
 
-    test('Total Invested = 0', () => expect(empty.calculateTotalInvested(), 0.0));
+    test(
+      'Total Invested = 0',
+      () => expect(empty.calculateTotalInvested(), 0.0),
+    );
     test('Net Profit = 0', () => expect(empty.calculateNetProfit(), 0.0));
     test('Net Cash Flow = 0', () => expect(empty.calculateNetCashFlow(), 0.0));
     test('ROI = 0', () => expect(empty.calculateROI(), 0.0));
-    test('Portfolio Value = 0', () => expect(empty.calculatePortfolioValue(), 0.0));
+    test(
+      'Portfolio Value = 0',
+      () => expect(empty.calculatePortfolioValue(), 0.0),
+    );
   });
 }

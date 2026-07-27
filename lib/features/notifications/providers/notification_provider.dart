@@ -67,50 +67,51 @@ class NotificationFilterNotifier extends Notifier<NotificationFilterState> {
 
 final notificationFilterProvider =
     NotifierProvider<NotificationFilterNotifier, NotificationFilterState>(
-  NotificationFilterNotifier.new,
-);
+      NotificationFilterNotifier.new,
+    );
 
 final filteredNotificationsProvider =
     Provider<AsyncValue<List<AppNotification>>>((ref) {
-  final asyncNotifications = ref.watch(watchNotificationsProvider);
-  final filter = ref.watch(notificationFilterProvider);
+      final asyncNotifications = ref.watch(watchNotificationsProvider);
+      final filter = ref.watch(notificationFilterProvider);
 
-  return asyncNotifications.whenData((notifications) {
-    final filtered = notifications.where((notification) {
-      if (notification.deleted || notification.archived) {
-        return false;
-      }
+      return asyncNotifications.whenData((notifications) {
+        final filtered = notifications.where((notification) {
+          if (notification.deleted || notification.archived) {
+            return false;
+          }
 
-      if (filter.category != null && notification.category != filter.category) {
-        return false;
-      }
+          if (filter.category != null &&
+              notification.category != filter.category) {
+            return false;
+          }
 
-      if (filter.unreadOnly && notification.isRead) {
-        return false;
-      }
+          if (filter.unreadOnly && notification.isRead) {
+            return false;
+          }
 
-      if (filter.query.isNotEmpty) {
-        final query = filter.query.toLowerCase();
-        final titleMatch = notification.title.toLowerCase().contains(query);
-        final bodyMatch = notification.body.toLowerCase().contains(query);
-        if (!titleMatch && !bodyMatch) {
-          return false;
-        }
-      }
+          if (filter.query.isNotEmpty) {
+            final query = filter.query.toLowerCase();
+            final titleMatch = notification.title.toLowerCase().contains(query);
+            final bodyMatch = notification.body.toLowerCase().contains(query);
+            if (!titleMatch && !bodyMatch) {
+              return false;
+            }
+          }
 
-      return true;
-    }).toList();
+          return true;
+        }).toList();
 
-    filtered.sort((a, b) {
-      if (a.pinned != b.pinned) {
-        return a.pinned ? -1 : 1;
-      }
-      return b.timestamp.compareTo(a.timestamp);
+        filtered.sort((a, b) {
+          if (a.pinned != b.pinned) {
+            return a.pinned ? -1 : 1;
+          }
+          return b.timestamp.compareTo(a.timestamp);
+        });
+
+        return filtered;
+      });
     });
-
-    return filtered;
-  });
-});
 
 final unreadNotificationsCountProvider = Provider<int>((ref) {
   final asyncNotifications = ref.watch(watchNotificationsProvider);
@@ -122,6 +123,7 @@ final unreadNotificationsCountProvider = Provider<int>((ref) {
 
 final recentNotificationsProvider = Provider<List<AppNotification>>((ref) {
   final asyncNotifications = ref.watch(filteredNotificationsProvider);
-  final notifications = asyncNotifications.valueOrNull ?? const <AppNotification>[];
+  final notifications =
+      asyncNotifications.valueOrNull ?? const <AppNotification>[];
   return notifications.take(3).toList();
 });

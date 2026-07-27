@@ -13,20 +13,18 @@ import '../providers/business_provider.dart';
 
 /// Screen for creating or updating a [Business] profile.
 class AddEditBusinessScreen extends ConsumerStatefulWidget {
-  const AddEditBusinessScreen({
-    this.businessId,
-    super.key,
-  });
+  const AddEditBusinessScreen({this.businessId, super.key});
 
   final int? businessId;
 
   @override
-  ConsumerState<AddEditBusinessScreen> createState() => _AddEditBusinessScreenState();
+  ConsumerState<AddEditBusinessScreen> createState() =>
+      _AddEditBusinessScreenState();
 }
 
 class _AddEditBusinessScreenState extends ConsumerState<AddEditBusinessScreen> {
   final _formKey = GlobalKey<FormState>();
-  
+
   // Form controllers
   final _nameController = TextEditingController();
   final _ownerController = TextEditingController();
@@ -73,7 +71,9 @@ class _AddEditBusinessScreenState extends ConsumerState<AddEditBusinessScreen> {
         _nameController.text = business.name;
         _ownerController.text = business.owner ?? '';
         _locationController.text = business.location ?? '';
-        _ownershipController.text = business.ownershipPercentage.toInt().toString();
+        _ownershipController.text = business.ownershipPercentage
+            .toInt()
+            .toString();
         _descriptionController.text = business.description ?? '';
         _selectedCategory = business.category;
         _tags = List.from(business.tags);
@@ -110,16 +110,23 @@ class _AddEditBusinessScreenState extends ConsumerState<AddEditBusinessScreen> {
 
     try {
       final repo = ref.read(businessRepositoryProvider);
-      
+
       final business = _existingBusiness ?? Business();
       business.name = _nameController.text.trim();
-      business.owner = _ownerController.text.trim().isEmpty ? null : _ownerController.text.trim();
-      business.location = _locationController.text.trim().isEmpty ? null : _locationController.text.trim();
-      business.description = _descriptionController.text.trim().isEmpty ? null : _descriptionController.text.trim();
-      business.ownershipPercentage = double.tryParse(_ownershipController.text) ?? 100.0;
+      business.owner = _ownerController.text.trim().isEmpty
+          ? null
+          : _ownerController.text.trim();
+      business.location = _locationController.text.trim().isEmpty
+          ? null
+          : _locationController.text.trim();
+      business.description = _descriptionController.text.trim().isEmpty
+          ? null
+          : _descriptionController.text.trim();
+      business.ownershipPercentage =
+          double.tryParse(_ownershipController.text) ?? 100.0;
       business.category = _selectedCategory;
       business.tags = _tags;
-      
+
       if (!_isEditMode) {
         business.createdDate = DateTime.now();
         business.status = 'Active';
@@ -138,15 +145,15 @@ class _AddEditBusinessScreenState extends ConsumerState<AddEditBusinessScreen> {
           businessName: business.name,
         );
       }
-      
+
       if (mounted) {
         context.pop();
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to save business: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Failed to save business: $e')));
       }
     } finally {
       if (mounted) {
@@ -204,7 +211,9 @@ class _AddEditBusinessScreenState extends ConsumerState<AddEditBusinessScreen> {
                 Text(
                   'Category',
                   style: theme.textTheme.labelMedium?.copyWith(
-                    color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
+                    color: isDark
+                        ? AppColors.darkTextSecondary
+                        : AppColors.lightTextSecondary,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -215,10 +224,7 @@ class _AddEditBusinessScreenState extends ConsumerState<AddEditBusinessScreen> {
                     hintText: 'Select category',
                   ),
                   items: categories.map((cat) {
-                    return DropdownMenuItem(
-                      value: cat,
-                      child: Text(cat),
-                    );
+                    return DropdownMenuItem(value: cat, child: Text(cat));
                   }).toList(),
                   onChanged: (val) {
                     setState(() {
@@ -283,7 +289,9 @@ class _AddEditBusinessScreenState extends ConsumerState<AddEditBusinessScreen> {
                 Text(
                   'Tags',
                   style: theme.textTheme.labelMedium?.copyWith(
-                    color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
+                    color: isDark
+                        ? AppColors.darkTextSecondary
+                        : AppColors.lightTextSecondary,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -337,10 +345,7 @@ class _AddEditBusinessScreenState extends ConsumerState<AddEditBusinessScreen> {
                     ),
                     AppSizes.gapW16,
                     Expanded(
-                      child: AppButton(
-                        onPressed: _saveForm,
-                        text: 'Save',
-                      ),
+                      child: AppButton(onPressed: _saveForm, text: 'Save'),
                     ),
                   ],
                 ),

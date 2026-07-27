@@ -39,7 +39,8 @@ class NotificationEventEngine {
   }) async {
     await _emit(
       title: archived ? 'Business archived' : 'Business restored',
-      body: '$businessName status changed to ${archived ? 'Archived' : 'Active'}.',
+      body:
+          '$businessName status changed to ${archived ? 'Archived' : 'Active'}.',
       category: NotificationCategory.business,
       type: NotificationType.informational,
       relatedBusinessId: businessId,
@@ -56,9 +57,7 @@ class NotificationEventEngine {
     );
   }
 
-  Future<void> emitTransactionEvent({
-    required Transaction transaction,
-  }) async {
+  Future<void> emitTransactionEvent({required Transaction transaction}) async {
     final event = _transactionEventMeta(transaction.type);
     await _emit(
       title: event.title,
@@ -81,9 +80,12 @@ class NotificationEventEngine {
       body: count == 1 ? '1 attachment added.' : '$count attachments added.',
       category: NotificationCategory.documents,
       type: NotificationType.success,
-      relatedBusinessId: ownerType == AttachmentOwnerType.business ? ownerId : null,
-      relatedTransactionId:
-          ownerType == AttachmentOwnerType.transaction ? ownerId : null,
+      relatedBusinessId: ownerType == AttachmentOwnerType.business
+          ? ownerId
+          : null,
+      relatedTransactionId: ownerType == AttachmentOwnerType.transaction
+          ? ownerId
+          : null,
       actionRoute: '/settings/documents',
     );
   }
@@ -118,7 +120,8 @@ class NotificationEventEngine {
       category: NotificationCategory.reminder,
       type: NotificationType.informational,
       relatedBusinessId: businessId,
-      actionRoute: '/reminders/new?businessId=$businessId&category=businessReview',
+      actionRoute:
+          '/reminders/new?businessId=$businessId&category=businessReview',
     );
 
     final now = DateTime.now();
@@ -195,7 +198,9 @@ class NotificationEventEngine {
   }
 }
 
-final notificationEventEngineProvider = Provider<NotificationEventEngine>((ref) {
+final notificationEventEngineProvider = Provider<NotificationEventEngine>((
+  ref,
+) {
   return NotificationEventEngine(ref);
 });
 

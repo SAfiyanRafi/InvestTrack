@@ -43,8 +43,11 @@ class _DocumentsScreenState extends ConsumerState<DocumentsScreen> {
     final filterState = ref.watch(documentFilterNotifierProvider);
     final filterNotifier = ref.read(documentFilterNotifierProvider.notifier);
 
-    final businesses = ref.watch(watchBusinessesProvider).valueOrNull ?? const [];
-    final transactions = ref.watch(watchTransactionsProvider).valueOrNull ?? const <Transaction>[];
+    final businesses =
+        ref.watch(watchBusinessesProvider).valueOrNull ?? const [];
+    final transactions =
+        ref.watch(watchTransactionsProvider).valueOrNull ??
+        const <Transaction>[];
 
     final businessNames = <int, String>{
       for (final business in businesses) business.id: business.name,
@@ -111,10 +114,10 @@ class _DocumentsScreenState extends ConsumerState<DocumentsScreen> {
                 ),
                 ChoiceChip(
                   label: const Text('Business Files'),
-                  selected: filterState.ownerType == AttachmentOwnerType.business,
-                  onSelected: (_) => filterNotifier.setOwnerType(
-                    AttachmentOwnerType.business,
-                  ),
+                  selected:
+                      filterState.ownerType == AttachmentOwnerType.business,
+                  onSelected: (_) =>
+                      filterNotifier.setOwnerType(AttachmentOwnerType.business),
                 ),
                 ChoiceChip(
                   label: const Text('Transaction Files'),
@@ -143,8 +146,9 @@ class _DocumentsScreenState extends ConsumerState<DocumentsScreen> {
                           Icon(
                             Icons.folder_copy_outlined,
                             size: 64,
-                            color:
-                                isDark ? AppColors.darkBorder : AppColors.lightBorder,
+                            color: isDark
+                                ? AppColors.darkBorder
+                                : AppColors.lightBorder,
                           ),
                           AppSizes.gapH16,
                           Text(
@@ -185,11 +189,11 @@ class _DocumentsScreenState extends ConsumerState<DocumentsScreen> {
                     padding: const EdgeInsets.all(AppSizes.p16),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 2.1,
-                      crossAxisSpacing: AppSizes.p12,
-                      mainAxisSpacing: AppSizes.p12,
-                    ),
+                          crossAxisCount: 2,
+                          childAspectRatio: 2.1,
+                          crossAxisSpacing: AppSizes.p12,
+                          mainAxisSpacing: AppSizes.p12,
+                        ),
                     itemCount: attachments.length,
                     itemBuilder: (context, index) {
                       final attachment = attachments[index];
@@ -276,29 +280,29 @@ class _DocumentsScreenState extends ConsumerState<DocumentsScreen> {
           builder: (context, setModalState) {
             final ownerItems = ownerType == AttachmentOwnerType.business
                 ? businesses
-                    .map<DropdownMenuItem<int>>((business) => DropdownMenuItem<int>(
+                      .map<DropdownMenuItem<int>>(
+                        (business) => DropdownMenuItem<int>(
                           value: business.id,
                           child: Text(
                             business.name,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
-                        ))
-                    .toList()
-                : transactions
-                    .map<DropdownMenuItem<int>>((tx) {
-                      final label =
-                          '${_capitalize(tx.type.name)} - ${DateFormat('d MMM y').format(tx.date)}';
-                      return DropdownMenuItem<int>(
-                        value: tx.id,
-                        child: Text(
-                          label,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
                         ),
-                      );
-                    })
-                    .toList();
+                      )
+                      .toList()
+                : transactions.map<DropdownMenuItem<int>>((tx) {
+                    final label =
+                        '${_capitalize(tx.type.name)} - ${DateFormat('d MMM y').format(tx.date)}';
+                    return DropdownMenuItem<int>(
+                      value: tx.id,
+                      child: Text(
+                        label,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    );
+                  }).toList();
 
             return Padding(
               padding: EdgeInsets.fromLTRB(
@@ -314,8 +318,8 @@ class _DocumentsScreenState extends ConsumerState<DocumentsScreen> {
                   Text(
                     'Attach Files',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   AppSizes.gapH16,
                   SegmentedButton<AttachmentOwnerType>(
@@ -544,11 +548,12 @@ class _DocumentsScreenState extends ConsumerState<DocumentsScreen> {
 
     if (newName == null || newName.isEmpty) return;
 
-    await ref.read(documentRepositoryProvider).renameAttachment(
-          attachment.id,
-          newName,
-        );
-    await ref.read(notificationEventEngineProvider).emitDocumentUpdated(newName);
+    await ref
+        .read(documentRepositoryProvider)
+        .renameAttachment(attachment.id, newName);
+    await ref
+        .read(notificationEventEngineProvider)
+        .emitDocumentUpdated(newName);
   }
 
   Future<void> _deleteAttachment(DocumentAttachment attachment) async {
@@ -577,8 +582,8 @@ class _DocumentsScreenState extends ConsumerState<DocumentsScreen> {
 
     await ref.read(documentRepositoryProvider).deleteAttachment(attachment.id);
     await ref
-      .read(notificationEventEngineProvider)
-      .emitDocumentDeleted(attachment.displayName);
+        .read(notificationEventEngineProvider)
+        .emitDocumentDeleted(attachment.displayName);
   }
 
   String _extractExtension(String filename) {
@@ -780,8 +785,4 @@ class _DocumentCard extends StatelessWidget {
   }
 }
 
-enum _AttachmentAction {
-  open,
-  rename,
-  delete,
-}
+enum _AttachmentAction { open, rename, delete }

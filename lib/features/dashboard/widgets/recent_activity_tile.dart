@@ -118,76 +118,88 @@ class RecentActivityTile extends StatelessWidget {
     switch (type) {
       case TransactionType.investment:
         return const _TxDetails(
-            label: 'Investment',
-            icon: Icons.account_balance,
-            color: AppColors.primary,
-            sign: '');
+          label: 'Investment',
+          icon: Icons.account_balance,
+          color: AppColors.primary,
+          sign: '',
+        );
       case TransactionType.additionalInvestment:
         return const _TxDetails(
-            label: 'Add. Investment',
-            icon: Icons.add_business,
-            color: AppColors.primary,
-            sign: '');
+          label: 'Add. Investment',
+          icon: Icons.add_business,
+          color: AppColors.primary,
+          sign: '',
+        );
       case TransactionType.income:
         return const _TxDetails(
-            label: 'Income',
-            icon: Icons.monetization_on,
-            color: AppColors.success,
-            sign: '+');
+          label: 'Income',
+          icon: Icons.monetization_on,
+          color: AppColors.success,
+          sign: '+',
+        );
       case TransactionType.dividend:
         return const _TxDetails(
-            label: 'Dividend',
-            icon: Icons.pie_chart,
-            color: AppColors.success,
-            sign: '+');
+          label: 'Dividend',
+          icon: Icons.pie_chart,
+          color: AppColors.success,
+          sign: '+',
+        );
       case TransactionType.expense:
         return const _TxDetails(
-            label: 'Expense',
-            icon: Icons.shopping_bag,
-            color: AppColors.error,
-            sign: '-');
+          label: 'Expense',
+          icon: Icons.shopping_bag,
+          color: AppColors.error,
+          sign: '-',
+        );
       case TransactionType.withdrawal:
         return const _TxDetails(
-            label: 'Withdrawal',
-            icon: Icons.arrow_downward,
-            color: AppColors.error,
-            sign: '-');
+          label: 'Withdrawal',
+          icon: Icons.arrow_downward,
+          color: AppColors.error,
+          sign: '-',
+        );
       case TransactionType.loan:
         return const _TxDetails(
-            label: 'Loan',
-            icon: Icons.handshake,
-            color: AppColors.warning,
-            sign: '+');
+          label: 'Loan',
+          icon: Icons.handshake,
+          color: AppColors.warning,
+          sign: '+',
+        );
       case TransactionType.loanRepayment:
         return const _TxDetails(
-            label: 'Loan Repayment',
-            icon: Icons.assignment_turned_in,
-            color: AppColors.error,
-            sign: '-');
+          label: 'Loan Repayment',
+          icon: Icons.assignment_turned_in,
+          color: AppColors.error,
+          sign: '-',
+        );
       case TransactionType.assetPurchase:
         return const _TxDetails(
-            label: 'Asset Purchase',
-            icon: Icons.shopping_cart,
-            color: AppColors.error,
-            sign: '-');
+          label: 'Asset Purchase',
+          icon: Icons.shopping_cart,
+          color: AppColors.error,
+          sign: '-',
+        );
       case TransactionType.assetSale:
         return const _TxDetails(
-            label: 'Asset Sale',
-            icon: Icons.sell,
-            color: AppColors.success,
-            sign: '+');
+          label: 'Asset Sale',
+          icon: Icons.sell,
+          color: AppColors.success,
+          sign: '+',
+        );
       case TransactionType.tax:
         return const _TxDetails(
-            label: 'Tax',
-            icon: Icons.percent,
-            color: AppColors.error,
-            sign: '-');
+          label: 'Tax',
+          icon: Icons.percent,
+          color: AppColors.error,
+          sign: '-',
+        );
       case TransactionType.other:
         return const _TxDetails(
-            label: 'Other',
-            icon: Icons.info,
-            color: Color(0xFF607D8B),
-            sign: '');
+          label: 'Other',
+          icon: Icons.info,
+          color: Color(0xFF607D8B),
+          sign: '',
+        );
     }
   }
 }

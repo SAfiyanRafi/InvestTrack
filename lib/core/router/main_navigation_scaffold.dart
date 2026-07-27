@@ -4,10 +4,7 @@ import 'package:go_router/go_router.dart';
 /// A responsive shell that wraps the application's primary screens with either
 /// a bottom navigation bar or a side navigation rail depending on device size.
 class MainNavigationScaffold extends StatelessWidget {
-  const MainNavigationScaffold({
-    required this.navigationShell,
-    super.key,
-  });
+  const MainNavigationScaffold({required this.navigationShell, super.key});
 
   /// The navigation shell containing the active child screen branch.
   final StatefulNavigationShell navigationShell;
@@ -100,9 +97,7 @@ class MainNavigationScaffold extends StatelessWidget {
               }).toList(),
             ),
             const VerticalDivider(thickness: 1, width: 1),
-            Expanded(
-              child: navigationShell,
-            ),
+            Expanded(child: navigationShell),
           ],
         ),
       );

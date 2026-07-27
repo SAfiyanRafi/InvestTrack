@@ -30,11 +30,14 @@ class BusinessRankTile extends StatelessWidget {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
-    final profitColor =
-        performance.netProfit >= 0 ? AppColors.success : AppColors.error;
+    final profitColor = performance.netProfit >= 0
+        ? AppColors.success
+        : AppColors.error;
     final roiColor = performance.roi >= 0 ? AppColors.success : AppColors.error;
 
-    final formattedProfit = CurrencyFormatter.formatSignedCurrency(performance.netProfit);
+    final formattedProfit = CurrencyFormatter.formatSignedCurrency(
+      performance.netProfit,
+    );
     final formattedRoi =
         '${performance.roi >= 0 ? '+' : ''}${performance.roi.toStringAsFixed(1)}%';
 

@@ -43,7 +43,9 @@ class AppTextField extends StatelessWidget {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
-    final baseFillColor = isDark ? AppColors.darkSurfaceCard : AppColors.lightSurfaceCard;
+    final baseFillColor = isDark
+        ? AppColors.darkSurfaceCard
+        : AppColors.lightSurfaceCard;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,7 +55,9 @@ class AppTextField extends StatelessWidget {
           Text(
             labelText!,
             style: theme.textTheme.labelMedium?.copyWith(
-              color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
+              color: isDark
+                  ? AppColors.darkTextSecondary
+                  : AppColors.lightTextSecondary,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -71,7 +75,9 @@ class AppTextField extends StatelessWidget {
           onTap: onTap,
           maxLines: maxLines,
           style: theme.textTheme.bodyMedium?.copyWith(
-            color: isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary,
+            color: isDark
+                ? AppColors.darkTextPrimary
+                : AppColors.lightTextPrimary,
           ),
           decoration: InputDecoration(
             hintText: hintText,
@@ -81,7 +87,9 @@ class AppTextField extends StatelessWidget {
                 ? Icon(
                     prefixIcon,
                     size: AppSizes.iconMedium,
-                    color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
+                    color: isDark
+                        ? AppColors.darkTextSecondary
+                        : AppColors.lightTextSecondary,
                   )
                 : null,
             suffixIcon: suffixIcon,

@@ -2,10 +2,7 @@ import 'package:isar/isar.dart';
 
 part 'document_attachment.g.dart';
 
-enum AttachmentOwnerType {
-  business,
-  transaction,
-}
+enum AttachmentOwnerType { business, transaction }
 
 @collection
 class DocumentAttachment {

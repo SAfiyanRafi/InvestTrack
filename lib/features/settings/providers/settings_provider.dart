@@ -61,6 +61,7 @@ class AppSettingsNotifier extends AsyncNotifier<AppSettings> {
   }
 }
 
-final appSettingsNotifierProvider = AsyncNotifierProvider<AppSettingsNotifier, AppSettings>(
-  AppSettingsNotifier.new,
-);
+final appSettingsNotifierProvider =
+    AsyncNotifierProvider<AppSettingsNotifier, AppSettings>(
+      AppSettingsNotifier.new,
+    );

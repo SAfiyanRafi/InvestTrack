@@ -28,30 +28,33 @@ class MockBusinessRepository implements BusinessRepository {
       ..category = 'Tech & SaaS'
       ..ownershipPercentage = 80.0
       ..createdDate = DateTime.now()
-      ..status = 'Active'
+      ..status = 'Active',
   ]);
 }
 
 void main() {
-  testWidgets('BusinessesListScreen renders and displays businesses from Mock Repository', (WidgetTester tester) async {
-    await tester.pumpWidget(
-      ProviderScope(
-        overrides: [
-          businessRepositoryProvider.overrideWithValue(MockBusinessRepository()),
-        ],
-        child: const MaterialApp(
-          home: BusinessesListScreen(),
+  testWidgets(
+    'BusinessesListScreen renders and displays businesses from Mock Repository',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            businessRepositoryProvider.overrideWithValue(
+              MockBusinessRepository(),
+            ),
+          ],
+          child: const MaterialApp(home: BusinessesListScreen()),
         ),
-      ),
-    );
+      );
 
-    // Let the stream resolve
-    await tester.pump();
+      // Let the stream resolve
+      await tester.pump();
 
-    // Verify search bar is visible
-    expect(find.byType(TextField), findsOneWidget);
+      // Verify search bar is visible
+      expect(find.byType(TextField), findsOneWidget);
 
-    // Verify the business name from the stream is rendered
-    expect(find.text('Mock Tech Corp'), findsOneWidget);
-  });
+      // Verify the business name from the stream is rendered
+      expect(find.text('Mock Tech Corp'), findsOneWidget);
+    },
+  );
 }

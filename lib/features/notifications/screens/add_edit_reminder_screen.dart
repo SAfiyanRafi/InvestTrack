@@ -35,7 +35,8 @@ class _AddEditReminderScreenState extends ConsumerState<AddEditReminderScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
-  final TextEditingController _customIntervalController = TextEditingController();
+  final TextEditingController _customIntervalController =
+      TextEditingController();
 
   DateTime _dueDate = DateTime.now().add(const Duration(hours: 1));
   ReminderRepeat _repeat = ReminderRepeat.none;
@@ -141,9 +142,7 @@ class _AddEditReminderScreenState extends ConsumerState<AddEditReminderScreen> {
 
     if (_dueDate.isBefore(DateTime.now()) && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please select a future date and time.'),
-        ),
+        const SnackBar(content: Text('Please select a future date and time.')),
       );
       return;
     }
@@ -156,8 +155,9 @@ class _AddEditReminderScreenState extends ConsumerState<AddEditReminderScreen> {
       reminder.description = _descriptionController.text.trim().isEmpty
           ? null
           : _descriptionController.text.trim();
-      reminder.notes =
-          _notesController.text.trim().isEmpty ? null : _notesController.text.trim();
+      reminder.notes = _notesController.text.trim().isEmpty
+          ? null
+          : _notesController.text.trim();
       reminder.dueDate = _dueDate;
       reminder.repeat = _repeat;
       reminder.priority = _priority;
@@ -175,18 +175,18 @@ class _AddEditReminderScreenState extends ConsumerState<AddEditReminderScreen> {
         context.pop();
         messenger.showSnackBar(
           SnackBar(
-            content: Text(_isEditMode
-                ? 'Reminder updated successfully.'
-                : 'Reminder created successfully.'),
+            content: Text(
+              _isEditMode
+                  ? 'Reminder updated successfully.'
+                  : 'Reminder created successfully.',
+            ),
           ),
         );
       }
     } catch (error) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to save reminder: $error'),
-          ),
+          SnackBar(content: Text('Failed to save reminder: $error')),
         );
       }
     } finally {
@@ -198,9 +198,11 @@ class _AddEditReminderScreenState extends ConsumerState<AddEditReminderScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final businesses = ref.watch(watchBusinessesProvider).valueOrNull ?? const [];
+    final businesses =
+        ref.watch(watchBusinessesProvider).valueOrNull ?? const [];
     final transactions =
-        ref.watch(watchTransactionsProvider).valueOrNull ?? const <Transaction>[];
+        ref.watch(watchTransactionsProvider).valueOrNull ??
+        const <Transaction>[];
 
     return Scaffold(
       appBar: AppBar(
@@ -233,7 +235,9 @@ class _AddEditReminderScreenState extends ConsumerState<AddEditReminderScreen> {
                 ListTile(
                   contentPadding: EdgeInsets.zero,
                   title: const Text('Due Date & Time'),
-                  subtitle: Text(DateFormat('d MMM y, h:mm a').format(_dueDate)),
+                  subtitle: Text(
+                    DateFormat('d MMM y, h:mm a').format(_dueDate),
+                  ),
                   trailing: const Icon(Icons.calendar_today_outlined),
                   onTap: _pickDateTime,
                 ),
@@ -243,10 +247,12 @@ class _AddEditReminderScreenState extends ConsumerState<AddEditReminderScreen> {
                   isExpanded: true,
                   decoration: const InputDecoration(labelText: 'Repeat'),
                   items: ReminderRepeat.values
-                      .map((repeat) => DropdownMenuItem(
-                            value: repeat,
-                            child: Text(_labelFromEnum(repeat.name)),
-                          ))
+                      .map(
+                        (repeat) => DropdownMenuItem(
+                          value: repeat,
+                          child: Text(_labelFromEnum(repeat.name)),
+                        ),
+                      )
                       .toList(),
                   onChanged: (value) {
                     if (value == null) return;
@@ -279,10 +285,12 @@ class _AddEditReminderScreenState extends ConsumerState<AddEditReminderScreen> {
                   isExpanded: true,
                   decoration: const InputDecoration(labelText: 'Priority'),
                   items: ReminderPriority.values
-                      .map((priority) => DropdownMenuItem(
-                            value: priority,
-                            child: Text(_labelFromEnum(priority.name)),
-                          ))
+                      .map(
+                        (priority) => DropdownMenuItem(
+                          value: priority,
+                          child: Text(_labelFromEnum(priority.name)),
+                        ),
+                      )
                       .toList(),
                   onChanged: (value) {
                     if (value == null) return;
@@ -297,10 +305,12 @@ class _AddEditReminderScreenState extends ConsumerState<AddEditReminderScreen> {
                   isExpanded: true,
                   decoration: const InputDecoration(labelText: 'Category'),
                   items: ReminderCategory.values
-                      .map((category) => DropdownMenuItem(
-                            value: category,
-                            child: Text(_labelFromEnum(category.name)),
-                          ))
+                      .map(
+                        (category) => DropdownMenuItem(
+                          value: category,
+                          child: Text(_labelFromEnum(category.name)),
+                        ),
+                      )
                       .toList(),
                   onChanged: (value) {
                     if (value == null) return;
@@ -313,20 +323,24 @@ class _AddEditReminderScreenState extends ConsumerState<AddEditReminderScreen> {
                 DropdownButtonFormField<int?>(
                   initialValue: _businessId,
                   isExpanded: true,
-                  decoration: const InputDecoration(labelText: 'Business (Optional)'),
+                  decoration: const InputDecoration(
+                    labelText: 'Business (Optional)',
+                  ),
                   items: [
                     const DropdownMenuItem<int?>(
                       value: null,
                       child: Text('None'),
                     ),
-                    ...businesses.map((business) => DropdownMenuItem<int?>(
-                          value: business.id,
-                          child: Text(
-                            business.name,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        )),
+                    ...businesses.map(
+                      (business) => DropdownMenuItem<int?>(
+                        value: business.id,
+                        child: Text(
+                          business.name,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
                   ],
                   onChanged: (value) {
                     setState(() {
@@ -338,21 +352,24 @@ class _AddEditReminderScreenState extends ConsumerState<AddEditReminderScreen> {
                 DropdownButtonFormField<int?>(
                   initialValue: _transactionId,
                   isExpanded: true,
-                  decoration:
-                      const InputDecoration(labelText: 'Transaction (Optional)'),
+                  decoration: const InputDecoration(
+                    labelText: 'Transaction (Optional)',
+                  ),
                   items: [
                     const DropdownMenuItem<int?>(
                       value: null,
                       child: Text('None'),
                     ),
-                    ...transactions.map((tx) => DropdownMenuItem<int?>(
-                          value: tx.id,
-                          child: Text(
-                            '${_labelFromEnum(tx.type.name)} - ${DateFormat('d MMM y').format(tx.date)}',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        )),
+                    ...transactions.map(
+                      (tx) => DropdownMenuItem<int?>(
+                        value: tx.id,
+                        child: Text(
+                          '${_labelFromEnum(tx.type.name)} - ${DateFormat('d MMM y').format(tx.date)}',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
                   ],
                   onChanged: (value) {
                     setState(() {

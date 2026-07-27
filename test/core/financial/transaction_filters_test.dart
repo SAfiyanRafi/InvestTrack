@@ -11,21 +11,28 @@ Transaction _tx({
   String? category,
   List<String> tags = const [],
   String? description,
-}) =>
-    Transaction()
-      ..businessId = businessId
-      ..type = type
-      ..amount = amount
-      ..date = date
-      ..category = category
-      ..tags = tags
-      ..description = description;
+}) => Transaction()
+  ..businessId = businessId
+  ..type = type
+  ..amount = amount
+  ..date = date
+  ..category = category
+  ..tags = tags
+  ..description = description;
 
 void main() {
   group('filterByMonth', () {
     final transactions = [
-      _tx(type: TransactionType.income, amount: 100, date: DateTime(2025, 3, 15)),
-      _tx(type: TransactionType.expense, amount: 50, date: DateTime(2025, 4, 1)),
+      _tx(
+        type: TransactionType.income,
+        amount: 100,
+        date: DateTime(2025, 3, 15),
+      ),
+      _tx(
+        type: TransactionType.expense,
+        amount: 50,
+        date: DateTime(2025, 4, 1),
+      ),
     ];
 
     test('returns only transactions in the target month', () {
@@ -38,7 +45,11 @@ void main() {
   group('filterByDateRange', () {
     final transactions = [
       _tx(type: TransactionType.income, amount: 10, date: DateTime(2025, 1, 1)),
-      _tx(type: TransactionType.income, amount: 20, date: DateTime(2025, 1, 31)),
+      _tx(
+        type: TransactionType.income,
+        amount: 20,
+        date: DateTime(2025, 1, 31),
+      ),
       _tx(type: TransactionType.income, amount: 30, date: DateTime(2025, 2, 1)),
     ];
 

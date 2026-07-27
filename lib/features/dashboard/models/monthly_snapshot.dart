@@ -24,10 +24,6 @@ class MonthlySnapshot {
   final double netProfit;
 
   /// Returns an empty snapshot for [month] (all values zero).
-  factory MonthlySnapshot.empty(DateTime month) => MonthlySnapshot(
-        month: month,
-        income: 0,
-        expenses: 0,
-        netProfit: 0,
-      );
+  factory MonthlySnapshot.empty(DateTime month) =>
+      MonthlySnapshot(month: month, income: 0, expenses: 0, netProfit: 0);
 }

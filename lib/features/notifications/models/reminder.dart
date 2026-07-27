@@ -2,22 +2,9 @@ import 'package:isar/isar.dart';
 
 part 'reminder.g.dart';
 
-enum ReminderRepeat {
-  none,
-  daily,
-  weekly,
-  monthly,
-  quarterly,
-  yearly,
-  custom,
-}
+enum ReminderRepeat { none, daily, weekly, monthly, quarterly, yearly, custom }
 
-enum ReminderPriority {
-  low,
-  medium,
-  high,
-  critical,
-}
+enum ReminderPriority { low, medium, high, critical }
 
 enum ReminderCategory {
   custom,

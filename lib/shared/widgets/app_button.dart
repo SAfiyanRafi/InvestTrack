@@ -59,7 +59,8 @@ class AppButton extends StatefulWidget {
   State<AppButton> createState() => _AppButtonState();
 }
 
-class _AppButtonState extends State<AppButton> with SingleTickerProviderStateMixin {
+class _AppButtonState extends State<AppButton>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
 
@@ -105,7 +106,7 @@ class _AppButtonState extends State<AppButton> with SingleTickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     final isText = widget.type == AppButtonType.text;
 
     Color? backgroundColor;
@@ -113,7 +114,9 @@ class _AppButtonState extends State<AppButton> with SingleTickerProviderStateMix
     BorderSide borderSide = BorderSide.none;
 
     if (widget.isDisabled) {
-      backgroundColor = isText ? Colors.transparent : theme.colorScheme.surfaceContainerHighest;
+      backgroundColor = isText
+          ? Colors.transparent
+          : theme.colorScheme.surfaceContainerHighest;
       foregroundColor = theme.disabledColor;
     } else {
       switch (widget.type) {
@@ -167,10 +170,7 @@ class _AppButtonState extends State<AppButton> with SingleTickerProviderStateMix
     );
 
     if (widget.fullWidth) {
-      content = SizedBox(
-        width: double.infinity,
-        child: content,
-      );
+      content = SizedBox(width: double.infinity, child: content);
     }
 
     final buttonStyle = OutlinedButton.styleFrom(
@@ -193,7 +193,8 @@ class _AppButtonState extends State<AppButton> with SingleTickerProviderStateMix
       child: ScaleTransition(
         scale: _scaleAnimation,
         child: OutlinedButton(
-          onPressed: null, // Gesture handled by parent detector for scale physics
+          onPressed:
+              null, // Gesture handled by parent detector for scale physics
           style: buttonStyle,
           child: content,
         ),

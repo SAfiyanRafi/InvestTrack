@@ -76,14 +76,8 @@ class _NotificationCenterScreenState
                 value: 'mark_all_read',
                 child: Text('Mark All Read'),
               ),
-              PopupMenuItem(
-                value: 'clear_read',
-                child: Text('Clear Read'),
-              ),
-              PopupMenuItem(
-                value: 'delete_all',
-                child: Text('Delete All'),
-              ),
+              PopupMenuItem(value: 'clear_read', child: Text('Clear Read')),
+              PopupMenuItem(value: 'delete_all', child: Text('Delete All')),
             ],
           ),
         ],
@@ -108,7 +102,9 @@ class _NotificationCenterScreenState
                 ),
                 SliverToBoxAdapter(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: AppSizes.p16),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSizes.p16,
+                    ),
                     child: Wrap(
                       spacing: AppSizes.p8,
                       runSpacing: AppSizes.p8,
@@ -127,7 +123,8 @@ class _NotificationCenterScreenState
                           return ChoiceChip(
                             selected: filter.category == category,
                             label: Text(_enumLabel(category.name)),
-                            onSelected: (_) => filterNotifier.setCategory(category),
+                            onSelected: (_) =>
+                                filterNotifier.setCategory(category),
                           );
                         }),
                       ],
@@ -179,8 +176,8 @@ class _NotificationCenterScreenState
                   Text(
                     section.label,
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   AppSizes.gapH8,
                   ...section.items.map(_buildNotificationCard),
@@ -200,9 +197,14 @@ class _NotificationCenterScreenState
       padding: const EdgeInsets.only(bottom: AppSizes.p8),
       child: Dismissible(
         key: ValueKey('notification-${notification.id}'),
-        background: _dismissBackground(AppColors.warning, Icons.archive_outlined),
-        secondaryBackground:
-            _dismissBackground(AppColors.error, Icons.delete_outline),
+        background: _dismissBackground(
+          AppColors.warning,
+          Icons.archive_outlined,
+        ),
+        secondaryBackground: _dismissBackground(
+          AppColors.error,
+          Icons.delete_outline,
+        ),
         confirmDismiss: (direction) async {
           if (direction == DismissDirection.startToEnd) {
             await repo.archiveNotification(notification.id);
@@ -237,7 +239,9 @@ class _NotificationCenterScreenState
                       width: 34,
                       height: 34,
                       decoration: BoxDecoration(
-                        color: _typeColor(notification.type).withValues(alpha: 0.12),
+                        color: _typeColor(
+                          notification.type,
+                        ).withValues(alpha: 0.12),
                         borderRadius: BorderRadius.circular(AppSizes.r8),
                       ),
                       child: Icon(
@@ -253,7 +257,8 @@ class _NotificationCenterScreenState
                         children: [
                           Text(
                             notification.title,
-                            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            style: Theme.of(context).textTheme.titleSmall
+                                ?.copyWith(
                                   fontWeight: notification.isRead
                                       ? FontWeight.w500
                                       : FontWeight.w700,
@@ -283,7 +288,10 @@ class _NotificationCenterScreenState
                       onSelected: (value) async {
                         switch (value) {
                           case 'pin':
-                            await repo.pinNotification(notification.id, !notification.pinned);
+                            await repo.pinNotification(
+                              notification.id,
+                              !notification.pinned,
+                            );
                             return;
                           case 'mark_read':
                             await repo.markAsRead(notification.id);
@@ -326,7 +334,9 @@ class _NotificationCenterScreenState
                     children: [
                       OutlinedButton(
                         onPressed: () async {
-                          await context.push('/reminders/${notification.relatedReminderId}/edit');
+                          await context.push(
+                            '/reminders/${notification.relatedReminderId}/edit',
+                          );
                         },
                         child: const Text('Open'),
                       ),
@@ -334,9 +344,11 @@ class _NotificationCenterScreenState
                         onPressed: () async {
                           final reminders =
                               ref.read(activeRemindersProvider).valueOrNull ??
-                                  const <Reminder>[];
+                              const <Reminder>[];
                           final target = reminders
-                              .where((r) => r.id == notification.relatedReminderId)
+                              .where(
+                                (r) => r.id == notification.relatedReminderId,
+                              )
                               .cast<Reminder?>()
                               .firstWhere(
                                 (item) => item != null,
@@ -345,13 +357,17 @@ class _NotificationCenterScreenState
                           if (target == null) {
                             return;
                           }
-                          await ref.read(reminderManagerProvider).rescheduleReminder(
+                          await ref
+                              .read(reminderManagerProvider)
+                              .rescheduleReminder(
                                 target,
                                 target.dueDate.add(const Duration(days: 1)),
                               );
                           if (mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Reminder snoozed by 1 day.')),
+                              const SnackBar(
+                                content: Text('Reminder snoozed by 1 day.'),
+                              ),
                             );
                           }
                         },
@@ -381,7 +397,8 @@ class _NotificationCenterScreenState
       loading: () => const AppLoader(message: 'Loading reminders...'),
       error: (error, _) => Center(child: Text('Error: $error')),
       data: (buckets) {
-        final totalCount = buckets.today.length +
+        final totalCount =
+            buckets.today.length +
             buckets.upcoming.length +
             buckets.overdue.length +
             buckets.completed.length;
@@ -402,9 +419,17 @@ class _NotificationCenterScreenState
               runSpacing: AppSizes.p8,
               children: [
                 _countChip('Today', buckets.today.length, AppColors.primary),
-                _countChip('Upcoming', buckets.upcoming.length, AppColors.success),
+                _countChip(
+                  'Upcoming',
+                  buckets.upcoming.length,
+                  AppColors.success,
+                ),
                 _countChip('Overdue', buckets.overdue.length, AppColors.error),
-                _countChip('Completed', buckets.completed.length, AppColors.secondary),
+                _countChip(
+                  'Completed',
+                  buckets.completed.length,
+                  AppColors.secondary,
+                ),
               ],
             ),
             AppSizes.gapH16,
@@ -439,9 +464,9 @@ class _NotificationCenterScreenState
         children: [
           Text(
             label,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
           ),
           AppSizes.gapH12,
           for (final reminder in reminders)
@@ -484,10 +509,11 @@ class _NotificationCenterScreenState
                     Text(
                       reminder.title,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                    if (reminder.description != null && reminder.description!.isNotEmpty) ...[
+                    if (reminder.description != null &&
+                        reminder.description!.isNotEmpty) ...[
                       AppSizes.gapH4,
                       Text(reminder.description!),
                     ],
@@ -577,7 +603,11 @@ class _NotificationCenterScreenState
     final earlierItems = <AppNotification>[];
 
     for (final item in notifications) {
-      final date = DateTime(item.timestamp.year, item.timestamp.month, item.timestamp.day);
+      final date = DateTime(
+        item.timestamp.year,
+        item.timestamp.month,
+        item.timestamp.day,
+      );
       if (date == today) {
         todayItems.add(item);
       } else if (date == yesterday) {
@@ -703,7 +733,11 @@ class _SearchBarHeader extends SliverPersistentHeaderDelegate {
   final VoidCallback onQueryCleared;
 
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
     return Container(
       color: Theme.of(context).scaffoldBackgroundColor,
       padding: const EdgeInsets.fromLTRB(
@@ -729,7 +763,9 @@ class _SearchBarHeader extends SliverPersistentHeaderDelegate {
                     onPressed: onQueryCleared,
                   ),
             border: InputBorder.none,
-            contentPadding: const EdgeInsets.symmetric(horizontal: AppSizes.p12),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: AppSizes.p12,
+            ),
           ),
           onChanged: onQueryChanged,
         ),
@@ -744,7 +780,8 @@ class _SearchBarHeader extends SliverPersistentHeaderDelegate {
   double get minExtent => 80;
 
   @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) => true;
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
+      true;
 }
 
 class _EmptyBlock extends StatelessWidget {
@@ -772,7 +809,9 @@ class _EmptyBlock extends StatelessWidget {
             AppSizes.gapH16,
             Text(
               title,
-              style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
             ),
             AppSizes.gapH8,
             Text(

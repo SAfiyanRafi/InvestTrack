@@ -21,10 +21,18 @@ import 'main_navigation_scaffold.dart';
 
 // Navigator keys for routing context
 final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
-final _dashboardNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'dashboard');
-final _businessesNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'businesses');
-final _transactionsNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'transactions');
-final _analyticsNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'analytics');
+final _dashboardNavigatorKey = GlobalKey<NavigatorState>(
+  debugLabel: 'dashboard',
+);
+final _businessesNavigatorKey = GlobalKey<NavigatorState>(
+  debugLabel: 'businesses',
+);
+final _transactionsNavigatorKey = GlobalKey<NavigatorState>(
+  debugLabel: 'transactions',
+);
+final _analyticsNavigatorKey = GlobalKey<NavigatorState>(
+  debugLabel: 'analytics',
+);
 final _reportsNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'reports');
 final _settingsNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'settings');
 
@@ -79,7 +87,9 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                         path: 'edit',
                         parentNavigatorKey: _rootNavigatorKey,
                         builder: (context, state) {
-                          final id = int.tryParse(state.pathParameters['id'] ?? '');
+                          final id = int.tryParse(
+                            state.pathParameters['id'] ?? '',
+                          );
                           if (id == null) {
                             return const _RouteParamErrorScreen(
                               message: 'Invalid business id in route.',
@@ -106,8 +116,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                     path: 'new',
                     parentNavigatorKey: _rootNavigatorKey,
                     builder: (context, state) {
-                      final businessIdStr = state.uri.queryParameters['businessId'];
-                      final businessId = businessIdStr != null ? int.tryParse(businessIdStr) : null;
+                      final businessIdStr =
+                          state.uri.queryParameters['businessId'];
+                      final businessId = businessIdStr != null
+                          ? int.tryParse(businessIdStr)
+                          : null;
                       return AddEditTransactionScreen(businessId: businessId);
                     },
                   ),
@@ -164,7 +177,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                   GoRoute(
                     path: 'appearance',
                     parentNavigatorKey: _rootNavigatorKey,
-                    builder: (context, state) => const AppearanceSettingsScreen(),
+                    builder: (context, state) =>
+                        const AppearanceSettingsScreen(),
                   ),
                   GoRoute(
                     path: 'about',
@@ -186,8 +200,12 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: '/reminders/new',
         parentNavigatorKey: _rootNavigatorKey,
         builder: (context, state) {
-          final businessId = int.tryParse(state.uri.queryParameters['businessId'] ?? '');
-          final transactionId = int.tryParse(state.uri.queryParameters['transactionId'] ?? '');
+          final businessId = int.tryParse(
+            state.uri.queryParameters['businessId'] ?? '',
+          );
+          final transactionId = int.tryParse(
+            state.uri.queryParameters['transactionId'] ?? '',
+          );
           final categoryRaw = state.uri.queryParameters['category'];
 
           ReminderCategory? category;
@@ -236,10 +254,7 @@ class _RouteParamErrorScreen extends StatelessWidget {
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(24),
-          child: Text(
-            message,
-            textAlign: TextAlign.center,
-          ),
+          child: Text(message, textAlign: TextAlign.center),
         ),
       ),
     );

@@ -75,20 +75,17 @@ typedef AnalyticsFilterNotifier = FinancialFilterNotifier;
 /// Reports own their filter state because reports are period-based documents.
 final reportFilterNotifierProvider =
     NotifierProvider<ReportFilterNotifier, ReportFilter>(
-  ReportFilterNotifier.new,
-);
+      ReportFilterNotifier.new,
+    );
 
 /// Analytics own their filter state because analysis is exploratory and should
 /// not mutate report selections.
 final analyticsFilterNotifierProvider =
     NotifierProvider<AnalyticsFilterNotifier, ReportFilter>(
-  AnalyticsFilterNotifier.new,
-);
+      AnalyticsFilterNotifier.new,
+    );
 
-AsyncValue<FilteredLedger> _buildFilteredLedger(
-  Ref ref,
-  ReportFilter filter,
-) {
+AsyncValue<FilteredLedger> _buildFilteredLedger(Ref ref, ReportFilter filter) {
   final businessesAsync = ref.watch(watchBusinessesProvider);
   final transactionsAsync = ref.watch(watchTransactionsProvider);
 
@@ -110,13 +107,17 @@ AsyncValue<FilteredLedger> _buildFilteredLedger(
 }
 
 /// Reactive filtered ledger for Reports.
-final reportFilteredLedgerProvider = Provider<AsyncValue<FilteredLedger>>((ref) {
+final reportFilteredLedgerProvider = Provider<AsyncValue<FilteredLedger>>((
+  ref,
+) {
   final filter = ref.watch(reportFilterNotifierProvider);
   return _buildFilteredLedger(ref, filter);
 });
 
 /// Reactive filtered ledger for Analytics.
-final analyticsFilteredLedgerProvider = Provider<AsyncValue<FilteredLedger>>((ref) {
+final analyticsFilteredLedgerProvider = Provider<AsyncValue<FilteredLedger>>((
+  ref,
+) {
   final filter = ref.watch(analyticsFilterNotifierProvider);
   return _buildFilteredLedger(ref, filter);
 });

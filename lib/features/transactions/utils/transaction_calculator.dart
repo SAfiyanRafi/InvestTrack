@@ -68,8 +68,9 @@ extension TransactionCalculator on Iterable<Transaction> {
   /// This value represents purely how much the investor has committed as
   /// equity capital.
   double calculateTotalInvested() {
-    return where((t) => t.type.isInvestmentType)
-        .fold(0.0, (sum, t) => sum + t.amount);
+    return where(
+      (t) => t.type.isInvestmentType,
+    ).fold(0.0, (sum, t) => sum + t.amount);
   }
 
   // ════════════════════════════════════════════════════════════════════════════
@@ -84,11 +85,13 @@ extension TransactionCalculator on Iterable<Transaction> {
   /// intentionally excluded — moving capital in or out is not a profit or
   /// loss event; it only changes the capital structure.
   double calculateTotalReturns() {
-    final revenue = where((t) => t.type.isRevenueType)
-        .fold(0.0, (sum, t) => sum + t.amount);
+    final revenue = where(
+      (t) => t.type.isRevenueType,
+    ).fold(0.0, (sum, t) => sum + t.amount);
 
-    final costs = where((t) => t.type.isCostType)
-        .fold(0.0, (sum, t) => sum + t.amount);
+    final costs = where(
+      (t) => t.type.isCostType,
+    ).fold(0.0, (sum, t) => sum + t.amount);
 
     return revenue - costs;
   }
@@ -117,22 +120,24 @@ extension TransactionCalculator on Iterable<Transaction> {
   ///   • Loan        → inflow   (borrowed cash enters the business)
   ///   • Loan Repayment → outflow (repaying the loan costs cash)
   double calculateNetCashFlow() {
-    final inflows = where((t) =>
-            t.type == TransactionType.income ||
-            t.type == TransactionType.dividend ||
-            t.type == TransactionType.assetSale ||
-            t.type == TransactionType.loan)
-        .fold(0.0, (sum, t) => sum + t.amount);
+    final inflows = where(
+      (t) =>
+          t.type == TransactionType.income ||
+          t.type == TransactionType.dividend ||
+          t.type == TransactionType.assetSale ||
+          t.type == TransactionType.loan,
+    ).fold(0.0, (sum, t) => sum + t.amount);
 
-    final outflows = where((t) =>
-            t.type == TransactionType.investment ||
-            t.type == TransactionType.additionalInvestment ||
-            t.type == TransactionType.expense ||
-            t.type == TransactionType.tax ||
-            t.type == TransactionType.withdrawal ||
-            t.type == TransactionType.assetPurchase ||
-            t.type == TransactionType.loanRepayment)
-        .fold(0.0, (sum, t) => sum + t.amount);
+    final outflows = where(
+      (t) =>
+          t.type == TransactionType.investment ||
+          t.type == TransactionType.additionalInvestment ||
+          t.type == TransactionType.expense ||
+          t.type == TransactionType.tax ||
+          t.type == TransactionType.withdrawal ||
+          t.type == TransactionType.assetPurchase ||
+          t.type == TransactionType.loanRepayment,
+    ).fold(0.0, (sum, t) => sum + t.amount);
 
     return inflows - outflows;
   }
@@ -180,34 +185,38 @@ extension TransactionCalculator on Iterable<Transaction> {
   ///
   /// Includes: Income, Dividend.
   double calculateTotalIncome() {
-    return where((t) =>
-            t.type == TransactionType.income ||
-            t.type == TransactionType.dividend)
-        .fold(0.0, (sum, t) => sum + t.amount);
+    return where(
+      (t) =>
+          t.type == TransactionType.income ||
+          t.type == TransactionType.dividend,
+    ).fold(0.0, (sum, t) => sum + t.amount);
   }
 
   /// Total operating expenses (tax is reported separately).
   double calculateTotalExpenses() {
-    return where((t) => t.type == TransactionType.expense)
-        .fold(0.0, (sum, t) => sum + t.amount);
+    return where(
+      (t) => t.type == TransactionType.expense,
+    ).fold(0.0, (sum, t) => sum + t.amount);
   }
 
   /// Total tax payments.
   double calculateTotalTaxes() {
-    return where((t) => t.type == TransactionType.tax)
-        .fold(0.0, (sum, t) => sum + t.amount);
+    return where(
+      (t) => t.type == TransactionType.tax,
+    ).fold(0.0, (sum, t) => sum + t.amount);
   }
 
   /// Total capital returned to the investor via withdrawals.
   double calculateTotalWithdrawals() {
-    return where((t) => t.type == TransactionType.withdrawal)
-        .fold(0.0, (sum, t) => sum + t.amount);
+    return where(
+      (t) => t.type == TransactionType.withdrawal,
+    ).fold(0.0, (sum, t) => sum + t.amount);
   }
 
   /// Total capital expenditure on asset purchases.
   double calculateTotalAssetPurchases() {
-    return where((t) => t.type == TransactionType.assetPurchase)
-        .fold(0.0, (sum, t) => sum + t.amount);
+    return where(
+      (t) => t.type == TransactionType.assetPurchase,
+    ).fold(0.0, (sum, t) => sum + t.amount);
   }
 }
-

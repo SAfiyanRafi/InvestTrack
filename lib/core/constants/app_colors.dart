@@ -9,7 +9,7 @@ abstract class AppColors {
   static const Color success = Color(0xFF10B981); // Emerald (Profit/ROI)
   static const Color warning = Color(0xFFF59E0B); // Amber (Pending/Loan)
   static const Color error = Color(0xFFEF4444); // Rose (Loss/Expense)
-  
+
   // Dark Theme Colors
   static const Color darkBackground = Color(0xFF090D16); // Deep Obsidian
   static const Color darkSurface = Color(0xFF111827); // Rich Slate Dark

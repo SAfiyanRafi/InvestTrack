@@ -17,7 +17,7 @@ class BusinessesListScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    
+
     // Watch providers
     final asyncBusinesses = ref.watch(filteredBusinessesProvider);
     final filterState = ref.watch(businessFilterNotifierProvider);
@@ -61,14 +61,12 @@ class BusinessesListScreen extends ConsumerWidget {
                   : null,
             ),
           ),
-          
+
           // List content
           Expanded(
             child: asyncBusinesses.when(
               loading: () => const AppLoader(message: 'Loading businesses...'),
-              error: (err, stack) => Center(
-                child: Text('Error: $err'),
-              ),
+              error: (err, stack) => Center(child: Text('Error: $err')),
               data: (businesses) {
                 if (businesses.isEmpty) {
                   return Center(
@@ -80,7 +78,9 @@ class BusinessesListScreen extends ConsumerWidget {
                           Icon(
                             Icons.business_center_outlined,
                             size: 64,
-                            color: isDark ? AppColors.darkBorder : AppColors.lightBorder,
+                            color: isDark
+                                ? AppColors.darkBorder
+                                : AppColors.lightBorder,
                           ),
                           AppSizes.gapH16,
                           Text(
@@ -102,7 +102,9 @@ class BusinessesListScreen extends ConsumerWidget {
                                 : 'Add your first business investment profile to get started.',
                             textAlign: TextAlign.center,
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
+                              color: isDark
+                                  ? AppColors.darkTextSecondary
+                                  : AppColors.lightTextSecondary,
                             ),
                           ),
                           if (filterState.searchQuery.isEmpty &&
@@ -120,7 +122,7 @@ class BusinessesListScreen extends ConsumerWidget {
                     ),
                   );
                 }
-                
+
                 return ListView.builder(
                   padding: const EdgeInsets.symmetric(horizontal: AppSizes.p16),
                   itemCount: businesses.length,
@@ -149,7 +151,7 @@ class BusinessesListScreen extends ConsumerWidget {
   void _showFilterSheet(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    
+
     showModalBottomSheet<void>(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -159,7 +161,9 @@ class BusinessesListScreen extends ConsumerWidget {
         return Consumer(
           builder: (context, ref, child) {
             final filterState = ref.watch(businessFilterNotifierProvider);
-            final filterNotifier = ref.read(businessFilterNotifierProvider.notifier);
+            final filterNotifier = ref.read(
+              businessFilterNotifierProvider.notifier,
+            );
             final categories = ref.read(businessCategoriesProvider);
 
             return SingleChildScrollView(
@@ -188,11 +192,13 @@ class BusinessesListScreen extends ConsumerWidget {
                   ),
                   const Divider(),
                   AppSizes.gapH12,
-                  
+
                   // Status Filter
                   Text(
                     'Status',
-                    style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   AppSizes.gapH8,
                   Row(
@@ -204,18 +210,21 @@ class BusinessesListScreen extends ConsumerWidget {
                           label: Text(status),
                           selected: isSelected,
                           onSelected: (selected) {
-                            if (selected) filterNotifier.setStatusFilter(status);
+                            if (selected)
+                              filterNotifier.setStatusFilter(status);
                           },
                         ),
                       );
                     }).toList(),
                   ),
                   AppSizes.gapH16,
-                  
+
                   // Category Filter
                   Text(
                     'Category',
-                    style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   AppSizes.gapH8,
                   Wrap(
@@ -235,25 +244,31 @@ class BusinessesListScreen extends ConsumerWidget {
                           label: Text(cat),
                           selected: isSelected,
                           onSelected: (selected) {
-                            filterNotifier.setCategoryFilter(selected ? cat : null);
+                            filterNotifier.setCategoryFilter(
+                              selected ? cat : null,
+                            );
                           },
                         );
                       }),
                     ],
                   ),
                   AppSizes.gapH16,
-                  
+
                   // Sort By Options
                   Text(
                     'Sort By',
-                    style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   AppSizes.gapH8,
                   DropdownButtonFormField<BusinessSortOption>(
                     initialValue: filterState.sortBy,
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: isDark ? AppColors.darkSurfaceCard : AppColors.lightSurfaceCard,
+                      fillColor: isDark
+                          ? AppColors.darkSurfaceCard
+                          : AppColors.lightSurfaceCard,
                     ),
                     items: const [
                       DropdownMenuItem(
@@ -274,7 +289,7 @@ class BusinessesListScreen extends ConsumerWidget {
                     },
                   ),
                   AppSizes.gapH24,
-                  
+
                   // Apply Button
                   SizedBox(
                     width: double.infinity,

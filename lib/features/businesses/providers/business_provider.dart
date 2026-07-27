@@ -17,11 +17,7 @@ final watchBusinessesProvider = StreamProvider<List<Business>>((ref) {
 });
 
 /// Sorting options for the business list.
-enum BusinessSortOption {
-  alphabetical,
-  creationDate,
-  ownership,
-}
+enum BusinessSortOption { alphabetical, creationDate, ownership }
 
 /// Represents the filter and sort state of the business list.
 class BusinessFilterState {
@@ -47,7 +43,9 @@ class BusinessFilterState {
     return BusinessFilterState(
       searchQuery: searchQuery ?? this.searchQuery,
       statusFilter: statusFilter ?? this.statusFilter,
-      categoryFilter: clearCategory ? null : (categoryFilter ?? this.categoryFilter),
+      categoryFilter: clearCategory
+          ? null
+          : (categoryFilter ?? this.categoryFilter),
       sortBy: sortBy ?? this.sortBy,
     );
   }
@@ -86,8 +84,8 @@ class BusinessFilterNotifier extends Notifier<BusinessFilterState> {
 /// Provider that exposes the current filter and sort options state.
 final businessFilterNotifierProvider =
     NotifierProvider<BusinessFilterNotifier, BusinessFilterState>(
-  BusinessFilterNotifier.new,
-);
+      BusinessFilterNotifier.new,
+    );
 
 /// Exposes a static list of predefined business categories.
 final businessCategoriesProvider = Provider<List<String>>((ref) {
@@ -117,10 +115,15 @@ final filteredBusinessesProvider = Provider<AsyncValue<List<Business>>>((ref) {
       if (filters.searchQuery.isNotEmpty) {
         final query = filters.searchQuery.toLowerCase();
         final nameMatch = business.name.toLowerCase().contains(query);
-        final ownerMatch = business.owner?.toLowerCase().contains(query) ?? false;
-        final descMatch = business.description?.toLowerCase().contains(query) ?? false;
-        final locMatch = business.location?.toLowerCase().contains(query) ?? false;
-        final tagMatch = business.tags.any((tag) => tag.toLowerCase().contains(query));
+        final ownerMatch =
+            business.owner?.toLowerCase().contains(query) ?? false;
+        final descMatch =
+            business.description?.toLowerCase().contains(query) ?? false;
+        final locMatch =
+            business.location?.toLowerCase().contains(query) ?? false;
+        final tagMatch = business.tags.any(
+          (tag) => tag.toLowerCase().contains(query),
+        );
 
         if (!nameMatch && !ownerMatch && !descMatch && !locMatch && !tagMatch) {
           return false;
@@ -128,12 +131,14 @@ final filteredBusinessesProvider = Provider<AsyncValue<List<Business>>>((ref) {
       }
 
       // Apply Status Filter
-      if (filters.statusFilter != 'All' && business.status != filters.statusFilter) {
+      if (filters.statusFilter != 'All' &&
+          business.status != filters.statusFilter) {
         return false;
       }
 
       // Apply Category Filter
-      if (filters.categoryFilter != null && business.category != filters.categoryFilter) {
+      if (filters.categoryFilter != null &&
+          business.category != filters.categoryFilter) {
         return false;
       }
 
@@ -143,13 +148,19 @@ final filteredBusinessesProvider = Provider<AsyncValue<List<Business>>>((ref) {
     // 2. Sort the filtered list
     switch (filters.sortBy) {
       case BusinessSortOption.alphabetical:
-        filtered.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+        filtered.sort(
+          (a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()),
+        );
         break;
       case BusinessSortOption.creationDate:
-        filtered.sort((a, b) => b.createdDate.compareTo(a.createdDate)); // Newest first
+        filtered.sort(
+          (a, b) => b.createdDate.compareTo(a.createdDate),
+        ); // Newest first
         break;
       case BusinessSortOption.ownership:
-        filtered.sort((a, b) => b.ownershipPercentage.compareTo(a.ownershipPercentage)); // Highest first
+        filtered.sort(
+          (a, b) => b.ownershipPercentage.compareTo(a.ownershipPercentage),
+        ); // Highest first
         break;
     }
 

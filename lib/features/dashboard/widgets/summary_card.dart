@@ -78,13 +78,11 @@ class SummaryCard extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: Text(
                 value,
-                style: (isLarge
-                        ? theme.textTheme.headlineSmall
-                        : theme.textTheme.titleMedium)
-                    ?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: accent,
-                ),
+                style:
+                    (isLarge
+                            ? theme.textTheme.headlineSmall
+                            : theme.textTheme.titleMedium)
+                        ?.copyWith(fontWeight: FontWeight.bold, color: accent),
               ),
             ),
             const SizedBox(height: 2),

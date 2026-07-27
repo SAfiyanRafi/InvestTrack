@@ -48,11 +48,7 @@ const DocumentAttachmentSchema = CollectionSchema(
       name: r'originalFileName',
       type: IsarType.string,
     ),
-    r'ownerId': PropertySchema(
-      id: 6,
-      name: r'ownerId',
-      type: IsarType.long,
-    ),
+    r'ownerId': PropertySchema(id: 6, name: r'ownerId', type: IsarType.long),
     r'ownerType': PropertySchema(
       id: 7,
       name: r'ownerType',
@@ -68,7 +64,7 @@ const DocumentAttachmentSchema = CollectionSchema(
       id: 9,
       name: r'uploadedAt',
       type: IsarType.dateTime,
-    )
+    ),
   },
   estimateSize: _documentAttachmentEstimateSize,
   serialize: _documentAttachmentSerialize,
@@ -86,7 +82,7 @@ const DocumentAttachmentSchema = CollectionSchema(
           name: r'ownerType',
           type: IndexType.value,
           caseSensitive: false,
-        )
+        ),
       ],
     ),
     r'ownerId': IndexSchema(
@@ -99,7 +95,7 @@ const DocumentAttachmentSchema = CollectionSchema(
           name: r'ownerId',
           type: IndexType.value,
           caseSensitive: false,
-        )
+        ),
       ],
     ),
     r'displayName': IndexSchema(
@@ -112,7 +108,7 @@ const DocumentAttachmentSchema = CollectionSchema(
           name: r'displayName',
           type: IndexType.hash,
           caseSensitive: true,
-        )
+        ),
       ],
     ),
     r'uploadedAt': IndexSchema(
@@ -125,9 +121,9 @@ const DocumentAttachmentSchema = CollectionSchema(
           name: r'uploadedAt',
           type: IndexType.value,
           caseSensitive: false,
-        )
+        ),
       ],
-    )
+    ),
   },
   links: {},
   embeddedSchemas: {},
@@ -194,8 +190,10 @@ DocumentAttachment _documentAttachmentDeserialize(
   object.mimeType = reader.readStringOrNull(offsets[4]);
   object.originalFileName = reader.readString(offsets[5]);
   object.ownerId = reader.readLong(offsets[6]);
-  object.ownerType = _DocumentAttachmentownerTypeValueEnumMap[
-          reader.readByteOrNull(offsets[7])] ??
+  object.ownerType =
+      _DocumentAttachmentownerTypeValueEnumMap[reader.readByteOrNull(
+        offsets[7],
+      )] ??
       AttachmentOwnerType.business;
   object.updatedAt = reader.readDateTime(offsets[8]);
   object.uploadedAt = reader.readDateTime(offsets[9]);
@@ -224,9 +222,11 @@ P _documentAttachmentDeserializeProp<P>(
     case 6:
       return (reader.readLong(offset)) as P;
     case 7:
-      return (_DocumentAttachmentownerTypeValueEnumMap[
-              reader.readByteOrNull(offset)] ??
-          AttachmentOwnerType.business) as P;
+      return (_DocumentAttachmentownerTypeValueEnumMap[reader.readByteOrNull(
+                offset,
+              )] ??
+              AttachmentOwnerType.business)
+          as P;
     case 8:
       return (reader.readDateTime(offset)) as P;
     case 9:
@@ -250,12 +250,16 @@ Id _documentAttachmentGetId(DocumentAttachment object) {
 }
 
 List<IsarLinkBase<dynamic>> _documentAttachmentGetLinks(
-    DocumentAttachment object) {
+  DocumentAttachment object,
+) {
   return [];
 }
 
 void _documentAttachmentAttach(
-    IsarCollection<dynamic> col, Id id, DocumentAttachment object) {
+  IsarCollection<dynamic> col,
+  Id id,
+  DocumentAttachment object,
+) {
   object.id = id;
 }
 
@@ -268,7 +272,7 @@ extension DocumentAttachmentQueryWhereSort
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterWhere>
-      anyOwnerType() {
+  anyOwnerType() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         const IndexWhereClause.any(indexName: r'ownerType'),
@@ -277,7 +281,7 @@ extension DocumentAttachmentQueryWhereSort
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterWhere>
-      anyOwnerId() {
+  anyOwnerId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         const IndexWhereClause.any(indexName: r'ownerId'),
@@ -286,7 +290,7 @@ extension DocumentAttachmentQueryWhereSort
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterWhere>
-      anyUploadedAt() {
+  anyUploadedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         const IndexWhereClause.any(indexName: r'uploadedAt'),
@@ -298,17 +302,14 @@ extension DocumentAttachmentQueryWhereSort
 extension DocumentAttachmentQueryWhere
     on QueryBuilder<DocumentAttachment, DocumentAttachment, QWhereClause> {
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterWhereClause>
-      idEqualTo(Id id) {
+  idEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: id,
-        upper: id,
-      ));
+      return query.addWhereClause(IdWhereClause.between(lower: id, upper: id));
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterWhereClause>
-      idNotEqualTo(Id id) {
+  idNotEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -331,7 +332,7 @@ extension DocumentAttachmentQueryWhere
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterWhereClause>
-      idGreaterThan(Id id, {bool include = false}) {
+  idGreaterThan(Id id, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.greaterThan(lower: id, includeLower: include),
@@ -340,7 +341,7 @@ extension DocumentAttachmentQueryWhere
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterWhereClause>
-      idLessThan(Id id, {bool include = false}) {
+  idLessThan(Id id, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
         IdWhereClause.lessThan(upper: id, includeUpper: include),
@@ -349,343 +350,376 @@ extension DocumentAttachmentQueryWhere
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterWhereClause>
-      idBetween(
+  idBetween(
     Id lowerId,
     Id upperId, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IdWhereClause.between(
-        lower: lowerId,
-        includeLower: includeLower,
-        upper: upperId,
-        includeUpper: includeUpper,
-      ));
+      return query.addWhereClause(
+        IdWhereClause.between(
+          lower: lowerId,
+          includeLower: includeLower,
+          upper: upperId,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterWhereClause>
-      ownerTypeEqualTo(AttachmentOwnerType ownerType) {
+  ownerTypeEqualTo(AttachmentOwnerType ownerType) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'ownerType',
-        value: [ownerType],
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.equalTo(indexName: r'ownerType', value: [ownerType]),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterWhereClause>
-      ownerTypeNotEqualTo(AttachmentOwnerType ownerType) {
+  ownerTypeNotEqualTo(AttachmentOwnerType ownerType) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'ownerType',
-              lower: [],
-              upper: [ownerType],
-              includeUpper: false,
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'ownerType',
-              lower: [ownerType],
-              includeLower: false,
-              upper: [],
-            ));
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'ownerType',
+                lower: [],
+                upper: [ownerType],
+                includeUpper: false,
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'ownerType',
+                lower: [ownerType],
+                includeLower: false,
+                upper: [],
+              ),
+            );
       } else {
         return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'ownerType',
-              lower: [ownerType],
-              includeLower: false,
-              upper: [],
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'ownerType',
-              lower: [],
-              upper: [ownerType],
-              includeUpper: false,
-            ));
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'ownerType',
+                lower: [ownerType],
+                includeLower: false,
+                upper: [],
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'ownerType',
+                lower: [],
+                upper: [ownerType],
+                includeUpper: false,
+              ),
+            );
       }
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterWhereClause>
-      ownerTypeGreaterThan(
-    AttachmentOwnerType ownerType, {
-    bool include = false,
-  }) {
+  ownerTypeGreaterThan(AttachmentOwnerType ownerType, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'ownerType',
-        lower: [ownerType],
-        includeLower: include,
-        upper: [],
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'ownerType',
+          lower: [ownerType],
+          includeLower: include,
+          upper: [],
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterWhereClause>
-      ownerTypeLessThan(
-    AttachmentOwnerType ownerType, {
-    bool include = false,
-  }) {
+  ownerTypeLessThan(AttachmentOwnerType ownerType, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'ownerType',
-        lower: [],
-        upper: [ownerType],
-        includeUpper: include,
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'ownerType',
+          lower: [],
+          upper: [ownerType],
+          includeUpper: include,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterWhereClause>
-      ownerTypeBetween(
+  ownerTypeBetween(
     AttachmentOwnerType lowerOwnerType,
     AttachmentOwnerType upperOwnerType, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'ownerType',
-        lower: [lowerOwnerType],
-        includeLower: includeLower,
-        upper: [upperOwnerType],
-        includeUpper: includeUpper,
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'ownerType',
+          lower: [lowerOwnerType],
+          includeLower: includeLower,
+          upper: [upperOwnerType],
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterWhereClause>
-      ownerIdEqualTo(int ownerId) {
+  ownerIdEqualTo(int ownerId) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'ownerId',
-        value: [ownerId],
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.equalTo(indexName: r'ownerId', value: [ownerId]),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterWhereClause>
-      ownerIdNotEqualTo(int ownerId) {
+  ownerIdNotEqualTo(int ownerId) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'ownerId',
-              lower: [],
-              upper: [ownerId],
-              includeUpper: false,
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'ownerId',
-              lower: [ownerId],
-              includeLower: false,
-              upper: [],
-            ));
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'ownerId',
+                lower: [],
+                upper: [ownerId],
+                includeUpper: false,
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'ownerId',
+                lower: [ownerId],
+                includeLower: false,
+                upper: [],
+              ),
+            );
       } else {
         return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'ownerId',
-              lower: [ownerId],
-              includeLower: false,
-              upper: [],
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'ownerId',
-              lower: [],
-              upper: [ownerId],
-              includeUpper: false,
-            ));
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'ownerId',
+                lower: [ownerId],
+                includeLower: false,
+                upper: [],
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'ownerId',
+                lower: [],
+                upper: [ownerId],
+                includeUpper: false,
+              ),
+            );
       }
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterWhereClause>
-      ownerIdGreaterThan(
-    int ownerId, {
-    bool include = false,
-  }) {
+  ownerIdGreaterThan(int ownerId, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'ownerId',
-        lower: [ownerId],
-        includeLower: include,
-        upper: [],
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'ownerId',
+          lower: [ownerId],
+          includeLower: include,
+          upper: [],
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterWhereClause>
-      ownerIdLessThan(
-    int ownerId, {
-    bool include = false,
-  }) {
+  ownerIdLessThan(int ownerId, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'ownerId',
-        lower: [],
-        upper: [ownerId],
-        includeUpper: include,
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'ownerId',
+          lower: [],
+          upper: [ownerId],
+          includeUpper: include,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterWhereClause>
-      ownerIdBetween(
+  ownerIdBetween(
     int lowerOwnerId,
     int upperOwnerId, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'ownerId',
-        lower: [lowerOwnerId],
-        includeLower: includeLower,
-        upper: [upperOwnerId],
-        includeUpper: includeUpper,
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'ownerId',
+          lower: [lowerOwnerId],
+          includeLower: includeLower,
+          upper: [upperOwnerId],
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterWhereClause>
-      displayNameEqualTo(String displayName) {
+  displayNameEqualTo(String displayName) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'displayName',
-        value: [displayName],
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.equalTo(
+          indexName: r'displayName',
+          value: [displayName],
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterWhereClause>
-      displayNameNotEqualTo(String displayName) {
+  displayNameNotEqualTo(String displayName) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'displayName',
-              lower: [],
-              upper: [displayName],
-              includeUpper: false,
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'displayName',
-              lower: [displayName],
-              includeLower: false,
-              upper: [],
-            ));
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'displayName',
+                lower: [],
+                upper: [displayName],
+                includeUpper: false,
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'displayName',
+                lower: [displayName],
+                includeLower: false,
+                upper: [],
+              ),
+            );
       } else {
         return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'displayName',
-              lower: [displayName],
-              includeLower: false,
-              upper: [],
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'displayName',
-              lower: [],
-              upper: [displayName],
-              includeUpper: false,
-            ));
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'displayName',
+                lower: [displayName],
+                includeLower: false,
+                upper: [],
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'displayName',
+                lower: [],
+                upper: [displayName],
+                includeUpper: false,
+              ),
+            );
       }
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterWhereClause>
-      uploadedAtEqualTo(DateTime uploadedAt) {
+  uploadedAtEqualTo(DateTime uploadedAt) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'uploadedAt',
-        value: [uploadedAt],
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.equalTo(indexName: r'uploadedAt', value: [uploadedAt]),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterWhereClause>
-      uploadedAtNotEqualTo(DateTime uploadedAt) {
+  uploadedAtNotEqualTo(DateTime uploadedAt) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'uploadedAt',
-              lower: [],
-              upper: [uploadedAt],
-              includeUpper: false,
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'uploadedAt',
-              lower: [uploadedAt],
-              includeLower: false,
-              upper: [],
-            ));
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'uploadedAt',
+                lower: [],
+                upper: [uploadedAt],
+                includeUpper: false,
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'uploadedAt',
+                lower: [uploadedAt],
+                includeLower: false,
+                upper: [],
+              ),
+            );
       } else {
         return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'uploadedAt',
-              lower: [uploadedAt],
-              includeLower: false,
-              upper: [],
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'uploadedAt',
-              lower: [],
-              upper: [uploadedAt],
-              includeUpper: false,
-            ));
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'uploadedAt',
+                lower: [uploadedAt],
+                includeLower: false,
+                upper: [],
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'uploadedAt',
+                lower: [],
+                upper: [uploadedAt],
+                includeUpper: false,
+              ),
+            );
       }
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterWhereClause>
-      uploadedAtGreaterThan(
-    DateTime uploadedAt, {
-    bool include = false,
-  }) {
+  uploadedAtGreaterThan(DateTime uploadedAt, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'uploadedAt',
-        lower: [uploadedAt],
-        includeLower: include,
-        upper: [],
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'uploadedAt',
+          lower: [uploadedAt],
+          includeLower: include,
+          upper: [],
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterWhereClause>
-      uploadedAtLessThan(
-    DateTime uploadedAt, {
-    bool include = false,
-  }) {
+  uploadedAtLessThan(DateTime uploadedAt, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'uploadedAt',
-        lower: [],
-        upper: [uploadedAt],
-        includeUpper: include,
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'uploadedAt',
+          lower: [],
+          upper: [uploadedAt],
+          includeUpper: include,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterWhereClause>
-      uploadedAtBetween(
+  uploadedAtBetween(
     DateTime lowerUploadedAt,
     DateTime upperUploadedAt, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'uploadedAt',
-        lower: [lowerUploadedAt],
-        includeLower: includeLower,
-        upper: [upperUploadedAt],
-        includeUpper: includeUpper,
-      ));
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'uploadedAt',
+          lower: [lowerUploadedAt],
+          includeLower: includeLower,
+          upper: [upperUploadedAt],
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 }
@@ -693,53 +727,56 @@ extension DocumentAttachmentQueryWhere
 extension DocumentAttachmentQueryFilter
     on QueryBuilder<DocumentAttachment, DocumentAttachment, QFilterCondition> {
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      displayNameEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  displayNameEqualTo(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'displayName',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'displayName',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      displayNameGreaterThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'displayName',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      displayNameLessThan(
+  displayNameGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'displayName',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'displayName',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      displayNameBetween(
+  displayNameLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'displayName',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
+  displayNameBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -747,153 +784,158 @@ extension DocumentAttachmentQueryFilter
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'displayName',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'displayName',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      displayNameStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  displayNameStartsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'displayName',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'displayName',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      displayNameEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  displayNameEndsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'displayName',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'displayName',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      displayNameContains(String value, {bool caseSensitive = true}) {
+  displayNameContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'displayName',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'displayName',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      displayNameMatches(String pattern, {bool caseSensitive = true}) {
+  displayNameMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'displayName',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'displayName',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      displayNameIsEmpty() {
+  displayNameIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'displayName',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'displayName', value: ''),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      displayNameIsNotEmpty() {
+  displayNameIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'displayName',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'displayName', value: ''),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      extensionIsNull() {
+  extensionIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'extension',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'extension'),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      extensionIsNotNull() {
+  extensionIsNotNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'extension',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'extension'),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      extensionEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
+  extensionEqualTo(String? value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'extension',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'extension',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      extensionGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'extension',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      extensionLessThan(
+  extensionGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'extension',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'extension',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      extensionBetween(
+  extensionLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'extension',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
+  extensionBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -901,135 +943,140 @@ extension DocumentAttachmentQueryFilter
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'extension',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'extension',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      extensionStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  extensionStartsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'extension',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'extension',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      extensionEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  extensionEndsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'extension',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'extension',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      extensionContains(String value, {bool caseSensitive = true}) {
+  extensionContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'extension',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'extension',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      extensionMatches(String pattern, {bool caseSensitive = true}) {
+  extensionMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'extension',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'extension',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      extensionIsEmpty() {
+  extensionIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'extension',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'extension', value: ''),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      extensionIsNotEmpty() {
+  extensionIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'extension',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'extension', value: ''),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      filePathEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  filePathEqualTo(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'filePath',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'filePath',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      filePathGreaterThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'filePath',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      filePathLessThan(
+  filePathGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'filePath',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'filePath',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      filePathBetween(
+  filePathLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'filePath',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
+  filePathBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -1037,265 +1084,268 @@ extension DocumentAttachmentQueryFilter
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'filePath',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'filePath',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      filePathStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  filePathStartsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'filePath',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'filePath',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      filePathEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  filePathEndsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'filePath',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'filePath',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      filePathContains(String value, {bool caseSensitive = true}) {
+  filePathContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'filePath',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'filePath',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      filePathMatches(String pattern, {bool caseSensitive = true}) {
+  filePathMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'filePath',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'filePath',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      filePathIsEmpty() {
+  filePathIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'filePath',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'filePath', value: ''),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      filePathIsNotEmpty() {
+  filePathIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'filePath',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'filePath', value: ''),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      fileSizeBytesEqualTo(int value) {
+  fileSizeBytesEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'fileSizeBytes',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'fileSizeBytes', value: value),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      fileSizeBytesGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
+  fileSizeBytesGreaterThan(int value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'fileSizeBytes',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'fileSizeBytes',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      fileSizeBytesLessThan(
-    int value, {
-    bool include = false,
-  }) {
+  fileSizeBytesLessThan(int value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'fileSizeBytes',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'fileSizeBytes',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      fileSizeBytesBetween(
+  fileSizeBytesBetween(
     int lower,
     int upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'fileSizeBytes',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'fileSizeBytes',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      idEqualTo(Id value) {
+  idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'id', value: value),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      idGreaterThan(
-    Id value, {
-    bool include = false,
-  }) {
+  idGreaterThan(Id value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'id',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      idLessThan(
-    Id value, {
-    bool include = false,
-  }) {
+  idLessThan(Id value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'id',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'id',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      idBetween(
+  idBetween(
     Id lower,
     Id upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'id',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'id',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      mimeTypeIsNull() {
+  mimeTypeIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'mimeType',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'mimeType'),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      mimeTypeIsNotNull() {
+  mimeTypeIsNotNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'mimeType',
-      ));
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'mimeType'),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      mimeTypeEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
+  mimeTypeEqualTo(String? value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'mimeType',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'mimeType',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      mimeTypeGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'mimeType',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      mimeTypeLessThan(
+  mimeTypeGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'mimeType',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'mimeType',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      mimeTypeBetween(
+  mimeTypeLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'mimeType',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
+  mimeTypeBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -1303,135 +1353,140 @@ extension DocumentAttachmentQueryFilter
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'mimeType',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'mimeType',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      mimeTypeStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  mimeTypeStartsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'mimeType',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'mimeType',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      mimeTypeEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  mimeTypeEndsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'mimeType',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'mimeType',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      mimeTypeContains(String value, {bool caseSensitive = true}) {
+  mimeTypeContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'mimeType',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'mimeType',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      mimeTypeMatches(String pattern, {bool caseSensitive = true}) {
+  mimeTypeMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'mimeType',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'mimeType',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      mimeTypeIsEmpty() {
+  mimeTypeIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'mimeType',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'mimeType', value: ''),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      mimeTypeIsNotEmpty() {
+  mimeTypeIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'mimeType',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'mimeType', value: ''),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      originalFileNameEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  originalFileNameEqualTo(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'originalFileName',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'originalFileName',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      originalFileNameGreaterThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'originalFileName',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      originalFileNameLessThan(
+  originalFileNameGreaterThan(
     String value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'originalFileName',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'originalFileName',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      originalFileNameBetween(
+  originalFileNameLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'originalFileName',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
+  originalFileNameBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -1439,308 +1494,306 @@ extension DocumentAttachmentQueryFilter
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'originalFileName',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'originalFileName',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      originalFileNameStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  originalFileNameStartsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'originalFileName',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'originalFileName',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      originalFileNameEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+  originalFileNameEndsWith(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'originalFileName',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'originalFileName',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      originalFileNameContains(String value, {bool caseSensitive = true}) {
+  originalFileNameContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'originalFileName',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'originalFileName',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      originalFileNameMatches(String pattern, {bool caseSensitive = true}) {
+  originalFileNameMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'originalFileName',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'originalFileName',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      originalFileNameIsEmpty() {
+  originalFileNameIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'originalFileName',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'originalFileName', value: ''),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      originalFileNameIsNotEmpty() {
+  originalFileNameIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'originalFileName',
-        value: '',
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'originalFileName', value: ''),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      ownerIdEqualTo(int value) {
+  ownerIdEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'ownerId',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'ownerId', value: value),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      ownerIdGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
+  ownerIdGreaterThan(int value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'ownerId',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'ownerId',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      ownerIdLessThan(
-    int value, {
-    bool include = false,
-  }) {
+  ownerIdLessThan(int value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'ownerId',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'ownerId',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      ownerIdBetween(
+  ownerIdBetween(
     int lower,
     int upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'ownerId',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'ownerId',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      ownerTypeEqualTo(AttachmentOwnerType value) {
+  ownerTypeEqualTo(AttachmentOwnerType value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'ownerType',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'ownerType', value: value),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      ownerTypeGreaterThan(
-    AttachmentOwnerType value, {
-    bool include = false,
-  }) {
+  ownerTypeGreaterThan(AttachmentOwnerType value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'ownerType',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'ownerType',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      ownerTypeLessThan(
-    AttachmentOwnerType value, {
-    bool include = false,
-  }) {
+  ownerTypeLessThan(AttachmentOwnerType value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'ownerType',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'ownerType',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      ownerTypeBetween(
+  ownerTypeBetween(
     AttachmentOwnerType lower,
     AttachmentOwnerType upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'ownerType',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'ownerType',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      updatedAtEqualTo(DateTime value) {
+  updatedAtEqualTo(DateTime value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'updatedAt',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'updatedAt', value: value),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      updatedAtGreaterThan(
-    DateTime value, {
-    bool include = false,
-  }) {
+  updatedAtGreaterThan(DateTime value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'updatedAt',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'updatedAt',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      updatedAtLessThan(
-    DateTime value, {
-    bool include = false,
-  }) {
+  updatedAtLessThan(DateTime value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'updatedAt',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'updatedAt',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      updatedAtBetween(
+  updatedAtBetween(
     DateTime lower,
     DateTime upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'updatedAt',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'updatedAt',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      uploadedAtEqualTo(DateTime value) {
+  uploadedAtEqualTo(DateTime value) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'uploadedAt',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'uploadedAt', value: value),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      uploadedAtGreaterThan(
-    DateTime value, {
-    bool include = false,
-  }) {
+  uploadedAtGreaterThan(DateTime value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'uploadedAt',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'uploadedAt',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      uploadedAtLessThan(
-    DateTime value, {
-    bool include = false,
-  }) {
+  uploadedAtLessThan(DateTime value, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'uploadedAt',
-        value: value,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'uploadedAt',
+          value: value,
+        ),
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterFilterCondition>
-      uploadedAtBetween(
+  uploadedAtBetween(
     DateTime lower,
     DateTime upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'uploadedAt',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'uploadedAt',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
     });
   }
 }
@@ -1754,140 +1807,140 @@ extension DocumentAttachmentQueryLinks
 extension DocumentAttachmentQuerySortBy
     on QueryBuilder<DocumentAttachment, DocumentAttachment, QSortBy> {
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      sortByDisplayName() {
+  sortByDisplayName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'displayName', Sort.asc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      sortByDisplayNameDesc() {
+  sortByDisplayNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'displayName', Sort.desc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      sortByExtension() {
+  sortByExtension() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'extension', Sort.asc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      sortByExtensionDesc() {
+  sortByExtensionDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'extension', Sort.desc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      sortByFilePath() {
+  sortByFilePath() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'filePath', Sort.asc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      sortByFilePathDesc() {
+  sortByFilePathDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'filePath', Sort.desc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      sortByFileSizeBytes() {
+  sortByFileSizeBytes() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'fileSizeBytes', Sort.asc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      sortByFileSizeBytesDesc() {
+  sortByFileSizeBytesDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'fileSizeBytes', Sort.desc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      sortByMimeType() {
+  sortByMimeType() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'mimeType', Sort.asc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      sortByMimeTypeDesc() {
+  sortByMimeTypeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'mimeType', Sort.desc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      sortByOriginalFileName() {
+  sortByOriginalFileName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'originalFileName', Sort.asc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      sortByOriginalFileNameDesc() {
+  sortByOriginalFileNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'originalFileName', Sort.desc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      sortByOwnerId() {
+  sortByOwnerId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'ownerId', Sort.asc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      sortByOwnerIdDesc() {
+  sortByOwnerIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'ownerId', Sort.desc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      sortByOwnerType() {
+  sortByOwnerType() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'ownerType', Sort.asc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      sortByOwnerTypeDesc() {
+  sortByOwnerTypeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'ownerType', Sort.desc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      sortByUpdatedAt() {
+  sortByUpdatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updatedAt', Sort.asc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      sortByUpdatedAtDesc() {
+  sortByUpdatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updatedAt', Sort.desc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      sortByUploadedAt() {
+  sortByUploadedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'uploadedAt', Sort.asc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      sortByUploadedAtDesc() {
+  sortByUploadedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'uploadedAt', Sort.desc);
     });
@@ -1897,154 +1950,154 @@ extension DocumentAttachmentQuerySortBy
 extension DocumentAttachmentQuerySortThenBy
     on QueryBuilder<DocumentAttachment, DocumentAttachment, QSortThenBy> {
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      thenByDisplayName() {
+  thenByDisplayName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'displayName', Sort.asc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      thenByDisplayNameDesc() {
+  thenByDisplayNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'displayName', Sort.desc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      thenByExtension() {
+  thenByExtension() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'extension', Sort.asc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      thenByExtensionDesc() {
+  thenByExtensionDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'extension', Sort.desc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      thenByFilePath() {
+  thenByFilePath() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'filePath', Sort.asc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      thenByFilePathDesc() {
+  thenByFilePathDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'filePath', Sort.desc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      thenByFileSizeBytes() {
+  thenByFileSizeBytes() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'fileSizeBytes', Sort.asc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      thenByFileSizeBytesDesc() {
+  thenByFileSizeBytesDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'fileSizeBytes', Sort.desc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      thenById() {
+  thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      thenByIdDesc() {
+  thenByIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.desc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      thenByMimeType() {
+  thenByMimeType() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'mimeType', Sort.asc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      thenByMimeTypeDesc() {
+  thenByMimeTypeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'mimeType', Sort.desc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      thenByOriginalFileName() {
+  thenByOriginalFileName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'originalFileName', Sort.asc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      thenByOriginalFileNameDesc() {
+  thenByOriginalFileNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'originalFileName', Sort.desc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      thenByOwnerId() {
+  thenByOwnerId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'ownerId', Sort.asc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      thenByOwnerIdDesc() {
+  thenByOwnerIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'ownerId', Sort.desc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      thenByOwnerType() {
+  thenByOwnerType() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'ownerType', Sort.asc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      thenByOwnerTypeDesc() {
+  thenByOwnerTypeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'ownerType', Sort.desc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      thenByUpdatedAt() {
+  thenByUpdatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updatedAt', Sort.asc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      thenByUpdatedAtDesc() {
+  thenByUpdatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updatedAt', Sort.desc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      thenByUploadedAt() {
+  thenByUploadedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'uploadedAt', Sort.asc);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QAfterSortBy>
-      thenByUploadedAtDesc() {
+  thenByUploadedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'uploadedAt', Sort.desc);
     });
@@ -2054,71 +2107,73 @@ extension DocumentAttachmentQuerySortThenBy
 extension DocumentAttachmentQueryWhereDistinct
     on QueryBuilder<DocumentAttachment, DocumentAttachment, QDistinct> {
   QueryBuilder<DocumentAttachment, DocumentAttachment, QDistinct>
-      distinctByDisplayName({bool caseSensitive = true}) {
+  distinctByDisplayName({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'displayName', caseSensitive: caseSensitive);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QDistinct>
-      distinctByExtension({bool caseSensitive = true}) {
+  distinctByExtension({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'extension', caseSensitive: caseSensitive);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QDistinct>
-      distinctByFilePath({bool caseSensitive = true}) {
+  distinctByFilePath({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'filePath', caseSensitive: caseSensitive);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QDistinct>
-      distinctByFileSizeBytes() {
+  distinctByFileSizeBytes() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'fileSizeBytes');
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QDistinct>
-      distinctByMimeType({bool caseSensitive = true}) {
+  distinctByMimeType({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'mimeType', caseSensitive: caseSensitive);
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QDistinct>
-      distinctByOriginalFileName({bool caseSensitive = true}) {
+  distinctByOriginalFileName({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'originalFileName',
-          caseSensitive: caseSensitive);
+      return query.addDistinctBy(
+        r'originalFileName',
+        caseSensitive: caseSensitive,
+      );
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QDistinct>
-      distinctByOwnerId() {
+  distinctByOwnerId() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'ownerId');
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QDistinct>
-      distinctByOwnerType() {
+  distinctByOwnerType() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'ownerType');
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QDistinct>
-      distinctByUpdatedAt() {
+  distinctByUpdatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'updatedAt');
     });
   }
 
   QueryBuilder<DocumentAttachment, DocumentAttachment, QDistinct>
-      distinctByUploadedAt() {
+  distinctByUploadedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'uploadedAt');
     });
@@ -2134,42 +2189,42 @@ extension DocumentAttachmentQueryProperty
   }
 
   QueryBuilder<DocumentAttachment, String, QQueryOperations>
-      displayNameProperty() {
+  displayNameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'displayName');
     });
   }
 
   QueryBuilder<DocumentAttachment, String?, QQueryOperations>
-      extensionProperty() {
+  extensionProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'extension');
     });
   }
 
   QueryBuilder<DocumentAttachment, String, QQueryOperations>
-      filePathProperty() {
+  filePathProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'filePath');
     });
   }
 
   QueryBuilder<DocumentAttachment, int, QQueryOperations>
-      fileSizeBytesProperty() {
+  fileSizeBytesProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'fileSizeBytes');
     });
   }
 
   QueryBuilder<DocumentAttachment, String?, QQueryOperations>
-      mimeTypeProperty() {
+  mimeTypeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'mimeType');
     });
   }
 
   QueryBuilder<DocumentAttachment, String, QQueryOperations>
-      originalFileNameProperty() {
+  originalFileNameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'originalFileName');
     });
@@ -2182,21 +2237,21 @@ extension DocumentAttachmentQueryProperty
   }
 
   QueryBuilder<DocumentAttachment, AttachmentOwnerType, QQueryOperations>
-      ownerTypeProperty() {
+  ownerTypeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'ownerType');
     });
   }
 
   QueryBuilder<DocumentAttachment, DateTime, QQueryOperations>
-      updatedAtProperty() {
+  updatedAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'updatedAt');
     });
   }
 
   QueryBuilder<DocumentAttachment, DateTime, QQueryOperations>
-      uploadedAtProperty() {
+  uploadedAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'uploadedAt');
     });

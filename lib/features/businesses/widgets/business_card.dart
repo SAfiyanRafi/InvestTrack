@@ -6,11 +6,7 @@ import '../models/business.dart';
 
 /// A card component displaying high-level details of a [Business].
 class BusinessCard extends StatelessWidget {
-  const BusinessCard({
-    required this.business,
-    required this.onTap,
-    super.key,
-  });
+  const BusinessCard({required this.business, required this.onTap, super.key});
 
   final Business business;
   final VoidCallback onTap;
@@ -21,7 +17,7 @@ class BusinessCard extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
 
     final isArchived = business.status == 'Archived';
-    
+
     // Status colors
     final statusColor = isArchived
         ? AppColors.darkTextMuted
@@ -55,7 +51,7 @@ class BusinessCard extends StatelessWidget {
                   ),
                 ),
               ),
-              
+
               // Status Tag
               Row(
                 children: [
@@ -72,7 +68,9 @@ class BusinessCard extends StatelessWidget {
                     business.status,
                     style: theme.textTheme.labelSmall?.copyWith(
                       color: isArchived
-                          ? (isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary)
+                          ? (isDark
+                                ? AppColors.darkTextSecondary
+                                : AppColors.lightTextSecondary)
                           : statusColor,
                       fontWeight: FontWeight.w600,
                     ),
@@ -82,7 +80,7 @@ class BusinessCard extends StatelessWidget {
             ],
           ),
           AppSizes.gapH12,
-          
+
           // Business name & owner
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,17 +93,22 @@ class BusinessCard extends StatelessWidget {
                       business.name,
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w700,
-                        color: isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary,
+                        color: isDark
+                            ? AppColors.darkTextPrimary
+                            : AppColors.lightTextPrimary,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    if (business.owner != null && business.owner!.isNotEmpty) ...[
+                    if (business.owner != null &&
+                        business.owner!.isNotEmpty) ...[
                       AppSizes.gapH4,
                       Text(
                         'Owner: ${business.owner}',
                         style: theme.textTheme.bodySmall?.copyWith(
-                          color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
+                          color: isDark
+                              ? AppColors.darkTextSecondary
+                              : AppColors.lightTextSecondary,
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -115,7 +118,7 @@ class BusinessCard extends StatelessWidget {
                 ),
               ),
               AppSizes.gapW16,
-              
+
               // Ownership progress indicator
               Column(
                 children: [
@@ -128,8 +131,12 @@ class BusinessCard extends StatelessWidget {
                         child: CircularProgressIndicator(
                           value: business.ownershipPercentage / 100,
                           strokeWidth: 3.5,
-                          backgroundColor: isDark ? AppColors.darkBorder : AppColors.lightBorder,
-                          valueColor: AlwaysStoppedAnimation<Color>(theme.colorScheme.primary),
+                          backgroundColor: isDark
+                              ? AppColors.darkBorder
+                              : AppColors.lightBorder,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            theme.colorScheme.primary,
+                          ),
                         ),
                       ),
                       Text(
@@ -145,7 +152,9 @@ class BusinessCard extends StatelessWidget {
                   Text(
                     'Equity',
                     style: theme.textTheme.labelSmall?.copyWith(
-                      color: isDark ? AppColors.darkTextMuted : AppColors.lightTextMuted,
+                      color: isDark
+                          ? AppColors.darkTextMuted
+                          : AppColors.lightTextMuted,
                       fontSize: 9,
                     ),
                   ),
@@ -153,7 +162,7 @@ class BusinessCard extends StatelessWidget {
               ),
             ],
           ),
-          
+
           // Tags listing (if any)
           if (business.tags.isNotEmpty) ...[
             AppSizes.gapH12,
@@ -168,13 +177,17 @@ class BusinessCard extends StatelessWidget {
                       vertical: 2.0,
                     ),
                     decoration: BoxDecoration(
-                      color: isDark ? AppColors.darkSurfaceCard : AppColors.lightSurfaceCard,
+                      color: isDark
+                          ? AppColors.darkSurfaceCard
+                          : AppColors.lightSurfaceCard,
                       borderRadius: BorderRadius.circular(AppSizes.r8),
                     ),
                     child: Text(
                       '#$tag',
                       style: theme.textTheme.labelSmall?.copyWith(
-                        color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
+                        color: isDark
+                            ? AppColors.darkTextSecondary
+                            : AppColors.lightTextSecondary,
                         fontSize: 10,
                       ),
                     ),

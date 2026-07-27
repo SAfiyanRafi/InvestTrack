@@ -24,20 +24,13 @@ final watchRemindersProvider = StreamProvider<List<Reminder>>((ref) {
 final activeRemindersProvider = Provider<AsyncValue<List<Reminder>>>((ref) {
   final asyncReminders = ref.watch(watchRemindersProvider);
   return asyncReminders.whenData((reminders) {
-    final filtered = reminders
-        .where((item) => !item.archived)
-        .toList()
+    final filtered = reminders.where((item) => !item.archived).toList()
       ..sort((a, b) => a.dueDate.compareTo(b.dueDate));
     return filtered;
   });
 });
 
-enum ReminderStatus {
-  upcoming,
-  today,
-  overdue,
-  completed,
-}
+enum ReminderStatus { upcoming, today, overdue, completed }
 
 class ReminderStatusBuckets {
   const ReminderStatusBuckets({
@@ -68,70 +61,78 @@ final reminderClockProvider = StreamProvider<DateTime>((ref) {
   return controller.stream;
 });
 
-final reminderStatusBucketsProvider = Provider<AsyncValue<ReminderStatusBuckets>>((ref) {
-  final asyncReminders = ref.watch(activeRemindersProvider);
-  final now = ref.watch(reminderClockProvider).valueOrNull ?? DateTime.now();
+final reminderStatusBucketsProvider =
+    Provider<AsyncValue<ReminderStatusBuckets>>((ref) {
+      final asyncReminders = ref.watch(activeRemindersProvider);
+      final now =
+          ref.watch(reminderClockProvider).valueOrNull ?? DateTime.now();
 
-  return asyncReminders.whenData((reminders) {
-    final todayStart = DateTime(now.year, now.month, now.day);
-    final tomorrowStart = todayStart.add(const Duration(days: 1));
+      return asyncReminders.whenData((reminders) {
+        final todayStart = DateTime(now.year, now.month, now.day);
+        final tomorrowStart = todayStart.add(const Duration(days: 1));
 
-    final today = <Reminder>[];
-    final upcoming = <Reminder>[];
-    final overdue = <Reminder>[];
-    final completed = <Reminder>[];
+        final today = <Reminder>[];
+        final upcoming = <Reminder>[];
+        final overdue = <Reminder>[];
+        final completed = <Reminder>[];
 
-    for (final reminder in reminders) {
-      if (reminder.completed) {
-        completed.add(reminder);
-        continue;
-      }
+        for (final reminder in reminders) {
+          if (reminder.completed) {
+            completed.add(reminder);
+            continue;
+          }
 
-      if (reminder.dueDate.isBefore(todayStart)) {
-        overdue.add(reminder);
-        continue;
-      }
+          if (reminder.dueDate.isBefore(todayStart)) {
+            overdue.add(reminder);
+            continue;
+          }
 
-      if (reminder.dueDate.isBefore(tomorrowStart)) {
-        today.add(reminder);
-        continue;
-      }
+          if (reminder.dueDate.isBefore(tomorrowStart)) {
+            today.add(reminder);
+            continue;
+          }
 
-      upcoming.add(reminder);
-    }
+          upcoming.add(reminder);
+        }
 
-    today.sort((a, b) => a.dueDate.compareTo(b.dueDate));
-    upcoming.sort((a, b) => a.dueDate.compareTo(b.dueDate));
-    overdue.sort((a, b) => a.dueDate.compareTo(b.dueDate));
-    completed.sort((a, b) {
-      final aAt = a.completedAt ?? a.updatedAt;
-      final bAt = b.completedAt ?? b.updatedAt;
-      return bAt.compareTo(aAt);
+        today.sort((a, b) => a.dueDate.compareTo(b.dueDate));
+        upcoming.sort((a, b) => a.dueDate.compareTo(b.dueDate));
+        overdue.sort((a, b) => a.dueDate.compareTo(b.dueDate));
+        completed.sort((a, b) {
+          final aAt = a.completedAt ?? a.updatedAt;
+          final bAt = b.completedAt ?? b.updatedAt;
+          return bAt.compareTo(aAt);
+        });
+
+        return ReminderStatusBuckets(
+          today: today,
+          upcoming: upcoming,
+          overdue: overdue,
+          completed: completed,
+        );
+      });
     });
 
-    return ReminderStatusBuckets(
-      today: today,
-      upcoming: upcoming,
-      overdue: overdue,
-      completed: completed,
-    );
-  });
-});
-
 final todayRemindersProvider = Provider<List<Reminder>>((ref) {
-  return ref.watch(reminderStatusBucketsProvider).valueOrNull?.today ?? const <Reminder>[];
+  return ref.watch(reminderStatusBucketsProvider).valueOrNull?.today ??
+      const <Reminder>[];
 });
 
 final overdueRemindersProvider = Provider<List<Reminder>>((ref) {
-  return ref.watch(reminderStatusBucketsProvider).valueOrNull?.overdue ?? const <Reminder>[];
+  return ref.watch(reminderStatusBucketsProvider).valueOrNull?.overdue ??
+      const <Reminder>[];
 });
 
 final completedRemindersProvider = Provider<List<Reminder>>((ref) {
-  return ref.watch(reminderStatusBucketsProvider).valueOrNull?.completed ?? const <Reminder>[];
+  return ref.watch(reminderStatusBucketsProvider).valueOrNull?.completed ??
+      const <Reminder>[];
 });
 
 final upcomingReminderProvider = Provider<Reminder?>((ref) {
-  final upcoming = ref.watch(reminderStatusBucketsProvider).valueOrNull?.upcoming;
+  final upcoming = ref
+      .watch(reminderStatusBucketsProvider)
+      .valueOrNull
+      ?.upcoming;
   if (upcoming == null || upcoming.isEmpty) {
     return null;
   }
@@ -139,7 +140,9 @@ final upcomingReminderProvider = Provider<Reminder?>((ref) {
 });
 
 final reminderScheduleSyncProvider = FutureProvider<void>((ref) async {
-  final reminders = await ref.read(reminderRepositoryProvider).getAllReminders();
+  final reminders = await ref
+      .read(reminderRepositoryProvider)
+      .getAllReminders();
   for (final reminder in reminders) {
     if (reminder.archived || reminder.completed) {
       continue;

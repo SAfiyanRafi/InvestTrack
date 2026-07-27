@@ -58,6 +58,8 @@ abstract class IsarDatabase {
       }
     }
 
-    throw StateError('Unable to initialize Isar database. Last error: $lastError');
+    throw StateError(
+      'Unable to initialize Isar database. Last error: $lastError',
+    );
   }
 }

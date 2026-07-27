@@ -18,15 +18,13 @@ import '../providers/business_provider.dart';
 
 /// Screen showing detailed profile information and live financial performance metrics of a [Business].
 class BusinessDetailsScreen extends ConsumerStatefulWidget {
-  const BusinessDetailsScreen({
-    required this.businessId,
-    super.key,
-  });
+  const BusinessDetailsScreen({required this.businessId, super.key});
 
   final int businessId;
 
   @override
-  ConsumerState<BusinessDetailsScreen> createState() => _BusinessDetailsScreenState();
+  ConsumerState<BusinessDetailsScreen> createState() =>
+      _BusinessDetailsScreenState();
 }
 
 class _BusinessDetailsScreenState extends ConsumerState<BusinessDetailsScreen> {
@@ -36,7 +34,7 @@ class _BusinessDetailsScreenState extends ConsumerState<BusinessDetailsScreen> {
     setState(() => _isLoading = true);
     final repo = ref.read(businessRepositoryProvider);
     final eventEngine = ref.read(notificationEventEngineProvider);
-    
+
     business.status = business.status == 'Active' ? 'Archived' : 'Active';
     await repo.saveBusiness(business);
     await eventEngine.emitBusinessArchived(
@@ -44,11 +42,13 @@ class _BusinessDetailsScreenState extends ConsumerState<BusinessDetailsScreen> {
       businessName: business.name,
       archived: business.status == 'Archived',
     );
-    
+
     if (mounted) {
       setState(() => _isLoading = false);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Business status updated to ${business.status}')),
+        SnackBar(
+          content: Text('Business status updated to ${business.status}'),
+        ),
       );
     }
   }
@@ -92,7 +92,7 @@ class _BusinessDetailsScreenState extends ConsumerState<BusinessDetailsScreen> {
       }
       await repo.deleteBusiness(widget.businessId);
       await eventEngine.emitBusinessDeleted(businessName ?? 'Business');
-      
+
       if (mounted) {
         setState(() => _isLoading = false);
         context.pop(); // Pop back to list screen
@@ -104,13 +104,15 @@ class _BusinessDetailsScreenState extends ConsumerState<BusinessDetailsScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    
+
     // Watch businesses stream to reactively update this screen
     final asyncBusinesses = ref.watch(watchBusinessesProvider);
 
     // Watch dynamic calculation metrics & transactions for this business
     final asyncMetrics = ref.watch(businessMetricsProvider(widget.businessId));
-    final asyncTransactions = ref.watch(watchBusinessTransactionsProvider(widget.businessId));
+    final asyncTransactions = ref.watch(
+      watchBusinessTransactionsProvider(widget.businessId),
+    );
 
     return asyncBusinesses.when(
       loading: () => const Scaffold(body: AppLoader(message: 'Loading...')),
@@ -134,7 +136,9 @@ class _BusinessDetailsScreenState extends ConsumerState<BusinessDetailsScreen> {
 
         final currentBusiness = business;
         final isArchived = currentBusiness.status == 'Archived';
-        final formattedDate = DateFormat('MMMM d, y').format(currentBusiness.createdDate);
+        final formattedDate = DateFormat(
+          'MMMM d, y',
+        ).format(currentBusiness.createdDate);
 
         return Scaffold(
           appBar: AppBar(
@@ -147,7 +151,8 @@ class _BusinessDetailsScreenState extends ConsumerState<BusinessDetailsScreen> {
               IconButton(
                 icon: const Icon(Icons.edit),
                 tooltip: 'Edit Business',
-                onPressed: () => context.push('/businesses/${currentBusiness.id}/edit'),
+                onPressed: () =>
+                    context.push('/businesses/${currentBusiness.id}/edit'),
               ),
               IconButton(
                 icon: Icon(isArchived ? Icons.unarchive : Icons.archive),
@@ -190,51 +195,74 @@ class _BusinessDetailsScreenState extends ConsumerState<BusinessDetailsScreen> {
                                 vertical: AppSizes.p4,
                               ),
                               decoration: BoxDecoration(
-                                color: (isArchived ? Colors.grey : AppColors.success)
-                                    .withValues(alpha: 0.12),
-                                borderRadius: BorderRadius.circular(AppSizes.r8),
+                                color:
+                                    (isArchived
+                                            ? Colors.grey
+                                            : AppColors.success)
+                                        .withValues(alpha: 0.12),
+                                borderRadius: BorderRadius.circular(
+                                  AppSizes.r8,
+                                ),
                               ),
                               child: Text(
                                 currentBusiness.status,
                                 style: theme.textTheme.labelMedium?.copyWith(
-                                  color: isArchived ? Colors.grey : AppColors.success,
+                                  color: isArchived
+                                      ? Colors.grey
+                                      : AppColors.success,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
                           ],
                         ),
-                        if (currentBusiness.owner != null && currentBusiness.owner!.isNotEmpty) ...[
+                        if (currentBusiness.owner != null &&
+                            currentBusiness.owner!.isNotEmpty) ...[
                           AppSizes.gapH8,
                           Text(
                             'Owner: ${currentBusiness.owner}',
                             style: theme.textTheme.titleMedium?.copyWith(
-                              color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
+                              color: isDark
+                                  ? AppColors.darkTextSecondary
+                                  : AppColors.lightTextSecondary,
                             ),
                           ),
                         ],
                         AppSizes.gapH12,
                         const Divider(),
                         AppSizes.gapH12,
-                        _buildDetailRow(context, 'Category', currentBusiness.category ?? 'Other'),
-                        _buildDetailRow(context, 'Location', currentBusiness.location ?? 'Not Specified'),
+                        _buildDetailRow(
+                          context,
+                          'Category',
+                          currentBusiness.category ?? 'Other',
+                        ),
+                        _buildDetailRow(
+                          context,
+                          'Location',
+                          currentBusiness.location ?? 'Not Specified',
+                        ),
                         _buildDetailRow(
                           context,
                           'Equity Ownership',
                           '${currentBusiness.ownershipPercentage.toInt()}%',
                         ),
                         _buildDetailRow(context, 'Created Date', formattedDate),
-                        if (currentBusiness.description != null && currentBusiness.description!.isNotEmpty) ...[
+                        if (currentBusiness.description != null &&
+                            currentBusiness.description!.isNotEmpty) ...[
                           AppSizes.gapH12,
                           Text(
                             'Investment Notes',
-                            style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
+                            style: theme.textTheme.titleSmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                           AppSizes.gapH4,
                           Text(
                             currentBusiness.description!,
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
+                              color: isDark
+                                  ? AppColors.darkTextSecondary
+                                  : AppColors.lightTextSecondary,
                             ),
                           ),
                         ],
@@ -272,14 +300,26 @@ class _BusinessDetailsScreenState extends ConsumerState<BusinessDetailsScreen> {
                     ),
                     error: (err, stack) => Text('Error loading metrics: $err'),
                     data: (metrics) {
-                      final investedFormatted = CurrencyFormatter.formatCurrency(metrics.totalInvested);
-                      final returnsFormatted = CurrencyFormatter.formatCurrency(metrics.totalReturns);
-                      final cashFlowFormatted = CurrencyFormatter.formatCurrency(metrics.netCashFlow);
+                      final investedFormatted =
+                          CurrencyFormatter.formatCurrency(
+                            metrics.totalInvested,
+                          );
+                      final returnsFormatted = CurrencyFormatter.formatCurrency(
+                        metrics.totalReturns,
+                      );
+                      final cashFlowFormatted =
+                          CurrencyFormatter.formatCurrency(metrics.netCashFlow);
                       final roiFormatted = '${metrics.roi.toStringAsFixed(2)}%';
-                      
-                      final returnsColor = metrics.totalReturns >= 0 ? AppColors.success : AppColors.error;
-                      final cashFlowColor = metrics.netCashFlow >= 0 ? AppColors.success : AppColors.error;
-                      final roiColor = metrics.roi >= 0 ? AppColors.success : AppColors.error;
+
+                      final returnsColor = metrics.totalReturns >= 0
+                          ? AppColors.success
+                          : AppColors.error;
+                      final cashFlowColor = metrics.netCashFlow >= 0
+                          ? AppColors.success
+                          : AppColors.error;
+                      final roiColor = metrics.roi >= 0
+                          ? AppColors.success
+                          : AppColors.error;
 
                       return Column(
                         children: [
@@ -345,7 +385,8 @@ class _BusinessDetailsScreenState extends ConsumerState<BusinessDetailsScreen> {
                   AppSizes.gapH12,
 
                   asyncTransactions.when(
-                    loading: () => const Center(child: CircularProgressIndicator()),
+                    loading: () =>
+                        const Center(child: CircularProgressIndicator()),
                     error: (err, stack) => Text('Error: $err'),
                     data: (transactions) {
                       if (transactions.isEmpty) {
@@ -357,13 +398,17 @@ class _BusinessDetailsScreenState extends ConsumerState<BusinessDetailsScreen> {
                                 Icon(
                                   Icons.receipt_long_outlined,
                                   size: 36,
-                                  color: isDark ? AppColors.darkBorder : AppColors.lightBorder,
+                                  color: isDark
+                                      ? AppColors.darkBorder
+                                      : AppColors.lightBorder,
                                 ),
                                 AppSizes.gapH12,
                                 Text(
                                   'No transactions logged yet.',
                                   style: theme.textTheme.bodyMedium?.copyWith(
-                                    color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
+                                    color: isDark
+                                        ? AppColors.darkTextSecondary
+                                        : AppColors.lightTextSecondary,
                                   ),
                                 ),
                               ],
@@ -380,10 +425,16 @@ class _BusinessDetailsScreenState extends ConsumerState<BusinessDetailsScreen> {
                         padding: EdgeInsets.zero,
                         child: Column(
                           children: [
-                            for (var index = 0; index < sorted.length; index++) ...[
+                            for (
+                              var index = 0;
+                              index < sorted.length;
+                              index++
+                            ) ...[
                               TransactionTile(
                                 transaction: sorted[index],
-                                onTap: () => context.push('/transactions/${sorted[index].id}/edit'),
+                                onTap: () => context.push(
+                                  '/transactions/${sorted[index].id}/edit',
+                                ),
                               ),
                               if (index < sorted.length - 1)
                                 const Divider(height: 1, indent: 70),
@@ -397,7 +448,9 @@ class _BusinessDetailsScreenState extends ConsumerState<BusinessDetailsScreen> {
 
                   // Actions
                   AppButton(
-                    onPressed: () => context.push('/transactions/new?businessId=${currentBusiness.id}'),
+                    onPressed: () => context.push(
+                      '/transactions/new?businessId=${currentBusiness.id}',
+                    ),
                     icon: Icons.add,
                     text: 'Add Transaction',
                   ),
@@ -424,7 +477,9 @@ class _BusinessDetailsScreenState extends ConsumerState<BusinessDetailsScreen> {
           Text(
             label,
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
+              color: isDark
+                  ? AppColors.darkTextSecondary
+                  : AppColors.lightTextSecondary,
             ),
           ),
           Text(
@@ -457,7 +512,8 @@ class _BusinessDetailsScreenState extends ConsumerState<BusinessDetailsScreen> {
           Icon(
             icon,
             size: 20,
-            color: color ??
+            color:
+                color ??
                 (isDark
                     ? AppColors.darkTextSecondary
                     : AppColors.lightTextSecondary),

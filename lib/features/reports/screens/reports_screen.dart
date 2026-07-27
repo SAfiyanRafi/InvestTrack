@@ -20,9 +20,7 @@ class ReportsScreen extends ConsumerWidget {
     final asyncReport = ref.watch(portfolioReportProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Reports'),
-      ),
+      appBar: AppBar(title: const Text('Reports')),
       body: asyncReport.when(
         loading: () => const AppLoader(message: 'Building reports...'),
         error: (err, _) => Center(child: Text('Error: $err')),
@@ -58,9 +56,8 @@ class ReportsScreen extends ConsumerWidget {
                           AppSizes.gapH16,
                           Text(
                             'No reports available',
-                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(fontWeight: FontWeight.bold),
                             textAlign: TextAlign.center,
                           ),
                           AppSizes.gapH8,
@@ -105,15 +102,26 @@ class ReportsScreen extends ConsumerWidget {
                         children: [
                           Text(
                             'Portfolio Report',
-                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            style: Theme.of(context).textTheme.titleLarge
+                                ?.copyWith(fontWeight: FontWeight.bold),
                           ),
                           AppSizes.gapH8,
                           _reportMetaRow(context, 'Period', periodLabel),
-                          _reportMetaRow(context, 'Business Status', filter.businessStatus),
-                          _reportMetaRow(context, 'Businesses Included', '${report.businessCount}'),
-                          _reportMetaRow(context, 'Transactions Included', '${report.transactionCount}'),
+                          _reportMetaRow(
+                            context,
+                            'Business Status',
+                            filter.businessStatus,
+                          ),
+                          _reportMetaRow(
+                            context,
+                            'Businesses Included',
+                            '${report.businessCount}',
+                          ),
+                          _reportMetaRow(
+                            context,
+                            'Transactions Included',
+                            '${report.transactionCount}',
+                          ),
                         ],
                       ),
                     ),
@@ -124,19 +132,64 @@ class ReportsScreen extends ConsumerWidget {
                         children: [
                           Text(
                             'Statement Summary',
-                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(fontWeight: FontWeight.bold),
                           ),
                           AppSizes.gapH12,
-                          _reportValueRow(context, 'Total Invested', CurrencyFormatter.formatCurrency(summary.totalInvested)),
-                          _reportValueRow(context, 'Income', CurrencyFormatter.formatCurrency(summary.totalIncome)),
-                          _reportValueRow(context, 'Expenses', CurrencyFormatter.formatCurrency(summary.totalExpenses)),
-                          _reportValueRow(context, 'Taxes', CurrencyFormatter.formatCurrency(summary.totalTaxes)),
-                          _reportValueRow(context, 'Withdrawals', CurrencyFormatter.formatCurrency(summary.totalWithdrawals)),
-                          _reportValueRow(context, 'Net Profit', CurrencyFormatter.formatCurrency(summary.netProfit), emphasize: true),
-                          _reportValueRow(context, 'ROI', '${summary.portfolioRoi.toStringAsFixed(2)}%'),
-                          _reportValueRow(context, 'Remaining Capital', CurrencyFormatter.formatCurrency(summary.portfolioValue), emphasize: true),
+                          _reportValueRow(
+                            context,
+                            'Total Invested',
+                            CurrencyFormatter.formatCurrency(
+                              summary.totalInvested,
+                            ),
+                          ),
+                          _reportValueRow(
+                            context,
+                            'Income',
+                            CurrencyFormatter.formatCurrency(
+                              summary.totalIncome,
+                            ),
+                          ),
+                          _reportValueRow(
+                            context,
+                            'Expenses',
+                            CurrencyFormatter.formatCurrency(
+                              summary.totalExpenses,
+                            ),
+                          ),
+                          _reportValueRow(
+                            context,
+                            'Taxes',
+                            CurrencyFormatter.formatCurrency(
+                              summary.totalTaxes,
+                            ),
+                          ),
+                          _reportValueRow(
+                            context,
+                            'Withdrawals',
+                            CurrencyFormatter.formatCurrency(
+                              summary.totalWithdrawals,
+                            ),
+                          ),
+                          _reportValueRow(
+                            context,
+                            'Net Profit',
+                            CurrencyFormatter.formatCurrency(summary.netProfit),
+                            emphasize: true,
+                          ),
+                          _reportValueRow(
+                            context,
+                            'ROI',
+                            '${summary.portfolioRoi.toStringAsFixed(2)}%',
+                          ),
+                          _reportValueRow(
+                            context,
+                            'Remaining Capital',
+                            CurrencyFormatter.formatCurrency(
+                              summary.portfolioValue,
+                            ),
+                            emphasize: true,
+                          ),
                         ],
                       ),
                     ),
@@ -147,12 +200,12 @@ class ReportsScreen extends ConsumerWidget {
                         children: [
                           Text(
                             'Monthly Breakdown',
-                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(fontWeight: FontWeight.bold),
                           ),
                           AppSizes.gapH12,
-                          for (final month in report.monthlySnapshots.reversed.take(6))
+                          for (final month
+                              in report.monthlySnapshots.reversed.take(6))
                             _reportValueRow(
                               context,
                               DateFormat('MMM y').format(month.month),
@@ -168,17 +221,20 @@ class ReportsScreen extends ConsumerWidget {
                         children: [
                           Text(
                             'Business Summary',
-                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(fontWeight: FontWeight.bold),
                           ),
                           AppSizes.gapH12,
-                          for (final performance in report.businessPerformances.take(5))
+                          for (final performance
+                              in report.businessPerformances.take(5))
                             _reportValueRow(
                               context,
                               performance.business.name,
-                              CurrencyFormatter.formatCurrency(performance.netProfit),
-                              subtitle: 'ROI ${performance.roi.toStringAsFixed(1)}%',
+                              CurrencyFormatter.formatCurrency(
+                                performance.netProfit,
+                              ),
+                              subtitle:
+                                  'ROI ${performance.roi.toStringAsFixed(1)}%',
                             ),
                         ],
                       ),
@@ -246,11 +302,7 @@ class ReportsScreen extends ConsumerWidget {
 
           if (isCompact) {
             return Column(
-              children: [
-                periodField,
-                AppSizes.gapH12,
-                statusField,
-              ],
+              children: [periodField, AppSizes.gapH12, statusField],
             );
           }
 
@@ -286,7 +338,9 @@ class ReportsScreen extends ConsumerWidget {
       case ReportPeriod.allTime:
         return 'All Time';
       case ReportPeriod.month:
-        return DateFormat('MMMM y').format(filter.referenceDate ?? DateTime.now());
+        return DateFormat(
+          'MMMM y',
+        ).format(filter.referenceDate ?? DateTime.now());
       case ReportPeriod.quarter:
         final date = filter.referenceDate ?? DateTime.now();
         final quarter = ((date.month - 1) ~/ 3) + 1;
@@ -311,7 +365,9 @@ class ReportsScreen extends ConsumerWidget {
           Text(label, style: theme.textTheme.bodyMedium),
           Text(
             value,
-            style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+            style: theme.textTheme.bodyMedium?.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ],
       ),
@@ -349,10 +405,7 @@ class ReportsScreen extends ConsumerWidget {
                 ),
               ),
               if (subtitle != null)
-                Text(
-                  subtitle,
-                  style: theme.textTheme.labelSmall,
-                ),
+                Text(subtitle, style: theme.textTheme.labelSmall),
             ],
           ),
         ],

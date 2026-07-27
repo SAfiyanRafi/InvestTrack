@@ -20,9 +20,9 @@ final watchTransactionsProvider = StreamProvider<List<Transaction>>((ref) {
 /// Exposes a stream of transactions specific to a business ID.
 final watchBusinessTransactionsProvider =
     StreamProvider.family<List<Transaction>, int>((ref, businessId) {
-  final repo = ref.watch(transactionRepositoryProvider);
-  return repo.watchTransactionsForBusiness(businessId);
-});
+      final repo = ref.watch(transactionRepositoryProvider);
+      return repo.watchTransactionsForBusiness(businessId);
+    });
 
 /// Wrapper class holding computed financial performance statistics for a business.
 class BusinessMetrics {
@@ -42,17 +42,19 @@ class BusinessMetrics {
 /// Dynamically calculates business performance metrics from the transaction stream.
 final businessMetricsProvider =
     Provider.family<AsyncValue<BusinessMetrics>, int>((ref, businessId) {
-  final asyncTransactions = ref.watch(watchBusinessTransactionsProvider(businessId));
+      final asyncTransactions = ref.watch(
+        watchBusinessTransactionsProvider(businessId),
+      );
 
-  return asyncTransactions.whenData((transactions) {
-    return BusinessMetrics(
-      totalInvested: transactions.calculateTotalInvested(),
-      totalReturns: transactions.calculateTotalReturns(),
-      netCashFlow: transactions.calculateNetCashFlow(),
-      roi: transactions.calculateROI(),
-    );
-  });
-});
+      return asyncTransactions.whenData((transactions) {
+        return BusinessMetrics(
+          totalInvested: transactions.calculateTotalInvested(),
+          totalReturns: transactions.calculateTotalReturns(),
+          netCashFlow: transactions.calculateNetCashFlow(),
+          roi: transactions.calculateROI(),
+        );
+      });
+    });
 
 /// Filters configuration state for the transaction timeline.
 class TransactionFilterState {
@@ -76,7 +78,9 @@ class TransactionFilterState {
     return TransactionFilterState(
       searchQuery: searchQuery ?? this.searchQuery,
       typeFilter: clearType ? null : (typeFilter ?? this.typeFilter),
-      businessIdFilter: clearBusiness ? null : (businessIdFilter ?? this.businessIdFilter),
+      businessIdFilter: clearBusiness
+          ? null
+          : (businessIdFilter ?? this.businessIdFilter),
     );
   }
 }
@@ -114,11 +118,13 @@ class TransactionFilterNotifier extends Notifier<TransactionFilterState> {
 /// Provider managing active search and filters for global transactions.
 final transactionFilterNotifierProvider =
     NotifierProvider<TransactionFilterNotifier, TransactionFilterState>(
-  TransactionFilterNotifier.new,
-);
+      TransactionFilterNotifier.new,
+    );
 
 /// Exposes the dynamically filtered and sorted (newest first) transactions list.
-final filteredTransactionsProvider = Provider<AsyncValue<List<Transaction>>>((ref) {
+final filteredTransactionsProvider = Provider<AsyncValue<List<Transaction>>>((
+  ref,
+) {
   final asyncTransactions = ref.watch(watchTransactionsProvider);
   final filters = ref.watch(transactionFilterNotifierProvider);
 
@@ -133,7 +139,11 @@ final filteredTransactionsProvider = Provider<AsyncValue<List<Transaction>>>((re
         final typeMatch = t.type.name.toLowerCase().contains(query);
         final amountMatch = t.amount.toString().contains(query);
 
-        if (!descMatch && !catMatch && !tagMatch && !typeMatch && !amountMatch) {
+        if (!descMatch &&
+            !catMatch &&
+            !tagMatch &&
+            !typeMatch &&
+            !amountMatch) {
           return false;
         }
       }
@@ -144,7 +154,8 @@ final filteredTransactionsProvider = Provider<AsyncValue<List<Transaction>>>((re
       }
 
       // 3. Filter by Related Business ID
-      if (filters.businessIdFilter != null && t.businessId != filters.businessIdFilter) {
+      if (filters.businessIdFilter != null &&
+          t.businessId != filters.businessIdFilter) {
         return false;
       }
 

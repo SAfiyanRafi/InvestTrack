@@ -96,10 +96,12 @@ class _AppCardState extends State<AppCard> with SingleTickerProviderStateMixin {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
-    final baseBgColor = widget.backgroundColor ??
+    final baseBgColor =
+        widget.backgroundColor ??
         (isDark ? AppColors.darkSurface : AppColors.lightSurface);
-    
-    final finalBorderColor = widget.borderColor ??
+
+    final finalBorderColor =
+        widget.borderColor ??
         (isDark ? AppColors.darkBorder : AppColors.lightBorder);
 
     final boxDecoration = BoxDecoration(
@@ -126,7 +128,7 @@ class _AppCardState extends State<AppCard> with SingleTickerProviderStateMixin {
           color: AppColors.shadowColor,
           blurRadius: 12,
           offset: Offset(0, 4),
-        )
+        ),
       ],
     );
 
@@ -137,10 +139,7 @@ class _AppCardState extends State<AppCard> with SingleTickerProviderStateMixin {
     );
 
     if (widget.margin != null) {
-      cardContent = Padding(
-        padding: widget.margin!,
-        child: cardContent,
-      );
+      cardContent = Padding(padding: widget.margin!, child: cardContent);
     }
 
     if (widget.onTap == null) {
@@ -152,10 +151,7 @@ class _AppCardState extends State<AppCard> with SingleTickerProviderStateMixin {
       onTapUp: _onTapUp,
       onTapCancel: _onTapCancel,
       behavior: HitTestBehavior.opaque,
-      child: ScaleTransition(
-        scale: _scaleAnimation,
-        child: cardContent,
-      ),
+      child: ScaleTransition(scale: _scaleAnimation, child: cardContent),
     );
   }
 }

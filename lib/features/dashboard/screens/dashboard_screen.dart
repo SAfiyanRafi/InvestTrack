@@ -47,7 +47,10 @@ class DashboardScreen extends ConsumerWidget {
                     right: -6,
                     top: -6,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 5,
+                        vertical: 2,
+                      ),
                       decoration: const BoxDecoration(
                         color: AppColors.error,
                         shape: BoxShape.rectangle,
@@ -55,13 +58,15 @@ class DashboardScreen extends ConsumerWidget {
                       ),
                       constraints: const BoxConstraints(minWidth: 18),
                       child: Text(
-                        unreadNotifications > 99 ? '99+' : '$unreadNotifications',
+                        unreadNotifications > 99
+                            ? '99+'
+                            : '$unreadNotifications',
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 10,
-                            ),
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 10,
+                        ),
                       ),
                     ),
                   ),
@@ -94,13 +99,21 @@ class DashboardScreen extends ConsumerWidget {
     final isDark = theme.brightness == Brightness.dark;
     final summary = data.summary;
 
-    final portfolioFormatted = CurrencyFormatter.formatCurrency(summary.portfolioValue);
-    final profitFormatted = CurrencyFormatter.formatSignedCurrency(summary.netProfit);
+    final portfolioFormatted = CurrencyFormatter.formatCurrency(
+      summary.portfolioValue,
+    );
+    final profitFormatted = CurrencyFormatter.formatSignedCurrency(
+      summary.netProfit,
+    );
     final roiFormatted =
         '${summary.portfolioRoi >= 0 ? '+' : ''}${summary.portfolioRoi.toStringAsFixed(2)}%';
 
-    final profitColor = summary.netProfit >= 0 ? AppColors.success : AppColors.error;
-    final roiColor = summary.portfolioRoi >= 0 ? AppColors.success : AppColors.error;
+    final profitColor = summary.netProfit >= 0
+        ? AppColors.success
+        : AppColors.error;
+    final roiColor = summary.portfolioRoi >= 0
+        ? AppColors.success
+        : AppColors.error;
 
     return Container(
       width: double.infinity,
@@ -120,9 +133,7 @@ class DashboardScreen extends ConsumerWidget {
                 ],
         ),
         borderRadius: BorderRadius.circular(AppSizes.r20),
-        border: Border.all(
-          color: AppColors.primary.withValues(alpha: 0.2),
-        ),
+        border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -130,7 +141,9 @@ class DashboardScreen extends ConsumerWidget {
           Text(
             'Portfolio Value',
             style: theme.textTheme.labelMedium?.copyWith(
-              color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
+              color: isDark
+                  ? AppColors.darkTextSecondary
+                  : AppColors.lightTextSecondary,
               letterSpacing: 0.5,
             ),
           ),
@@ -139,7 +152,9 @@ class DashboardScreen extends ConsumerWidget {
             portfolioFormatted,
             style: theme.textTheme.displaySmall?.copyWith(
               fontWeight: FontWeight.bold,
-              color: isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary,
+              color: isDark
+                  ? AppColors.darkTextPrimary
+                  : AppColors.lightTextPrimary,
             ),
           ),
           AppSizes.gapH16,
@@ -157,11 +172,17 @@ class DashboardScreen extends ConsumerWidget {
   }
 
   Widget _heroChip(
-      BuildContext context, String value, String label, Color color) {
+    BuildContext context,
+    String value,
+    String label,
+    Color color,
+  ) {
     final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(
-          horizontal: AppSizes.p12, vertical: AppSizes.p8),
+        horizontal: AppSizes.p12,
+        vertical: AppSizes.p8,
+      ),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(AppSizes.r8),
@@ -191,10 +212,12 @@ class DashboardScreen extends ConsumerWidget {
 
   Widget _buildKpiGrid(BuildContext context, DashboardData data) {
     final summary = data.summary;
-    final cashFlowColor =
-        summary.netCashFlow >= 0 ? AppColors.success : AppColors.error;
-    final netProfitColor =
-        summary.netProfit >= 0 ? AppColors.success : AppColors.error;
+    final cashFlowColor = summary.netCashFlow >= 0
+        ? AppColors.success
+        : AppColors.error;
+    final netProfitColor = summary.netProfit >= 0
+        ? AppColors.success
+        : AppColors.error;
 
     return Column(
       children: [
@@ -258,7 +281,9 @@ class DashboardScreen extends ConsumerWidget {
 
   Widget _buildMonthlySnapshot(BuildContext context, DashboardData data) {
     final snap = data.monthlySnapshot;
-    final profitColor = snap.netProfit >= 0 ? AppColors.success : AppColors.error;
+    final profitColor = snap.netProfit >= 0
+        ? AppColors.success
+        : AppColors.error;
 
     return Row(
       children: [
@@ -338,7 +363,11 @@ class DashboardScreen extends ConsumerWidget {
       padding: EdgeInsets.zero,
       child: Column(
         children: [
-          for (var index = 0; index < data.recentTransactions.length; index++) ...[
+          for (
+            var index = 0;
+            index < data.recentTransactions.length;
+            index++
+          ) ...[
             Builder(
               builder: (context) {
                 final tx = data.recentTransactions[index];
@@ -410,7 +439,9 @@ class DashboardScreen extends ConsumerWidget {
       borderRadius: BorderRadius.circular(AppSizes.r16),
       child: Container(
         padding: const EdgeInsets.symmetric(
-            vertical: AppSizes.p16, horizontal: AppSizes.p8),
+          vertical: AppSizes.p16,
+          horizontal: AppSizes.p8,
+        ),
         decoration: BoxDecoration(
           color: isDark ? AppColors.darkSurface : AppColors.lightSurface,
           borderRadius: BorderRadius.circular(AppSizes.r16),
@@ -453,10 +484,7 @@ class DashboardScreen extends ConsumerWidget {
             sliver: SliverList.list(
               children: [
                 RepaintBoundary(
-                  child: _buildPortfolioHero(
-                    context,
-                    DashboardData.empty,
-                  ),
+                  child: _buildPortfolioHero(context, DashboardData.empty),
                 ),
                 AppSizes.gapH16,
                 const RepaintBoundary(
@@ -557,7 +585,8 @@ class DashboardScreen extends ConsumerWidget {
                                   SizedBox(
                                     width: double.infinity,
                                     child: FilledButton.icon(
-                                      onPressed: () => context.push('/businesses/new'),
+                                      onPressed: () =>
+                                          context.push('/businesses/new'),
                                       icon: const Icon(Icons.add),
                                       label: const Text('Add Business'),
                                     ),
@@ -566,7 +595,8 @@ class DashboardScreen extends ConsumerWidget {
                                   SizedBox(
                                     width: double.infinity,
                                     child: OutlinedButton.icon(
-                                      onPressed: () => context.push('/transactions/new'),
+                                      onPressed: () =>
+                                          context.push('/transactions/new'),
                                       icon: const Icon(Icons.help_outline),
                                       label: const Text('Learn How'),
                                     ),
@@ -579,7 +609,8 @@ class DashboardScreen extends ConsumerWidget {
                               children: [
                                 Expanded(
                                   child: FilledButton.icon(
-                                    onPressed: () => context.push('/businesses/new'),
+                                    onPressed: () =>
+                                        context.push('/businesses/new'),
                                     icon: const Icon(Icons.add),
                                     label: const Text('Add Business'),
                                   ),
@@ -587,7 +618,8 @@ class DashboardScreen extends ConsumerWidget {
                                 AppSizes.gapW12,
                                 Expanded(
                                   child: OutlinedButton.icon(
-                                    onPressed: () => context.push('/transactions/new'),
+                                    onPressed: () =>
+                                        context.push('/transactions/new'),
                                     icon: const Icon(Icons.help_outline),
                                     label: const Text('Learn How'),
                                   ),
@@ -612,7 +644,10 @@ class DashboardScreen extends ConsumerWidget {
   // ── Helpers ────────────────────────────────────────────────────────────────
 
   Widget _buildSectionHeader(
-      BuildContext context, String title, String subtitle) {
+    BuildContext context,
+    String title,
+    String subtitle,
+  ) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
     return Row(
@@ -678,7 +713,9 @@ class DashboardScreen extends ConsumerWidget {
               ),
               title: Text(notifications[index].title),
               subtitle: Text(
-                DateFormat('d MMM, h:mm a').format(notifications[index].timestamp),
+                DateFormat(
+                  'd MMM, h:mm a',
+                ).format(notifications[index].timestamp),
               ),
               trailing: const Icon(Icons.chevron_right),
               onTap: () => context.push('/notifications'),
@@ -735,9 +772,7 @@ class _DashboardContent extends StatelessWidget {
         SliverPadding(
           padding: const EdgeInsets.symmetric(horizontal: AppSizes.p16),
           sliver: SliverToBoxAdapter(
-            child: RepaintBoundary(
-              child: screen._buildKpiGrid(context, data),
-            ),
+            child: RepaintBoundary(child: screen._buildKpiGrid(context, data)),
           ),
         ),
         const SliverToBoxAdapter(child: SizedBox(height: AppSizes.p24)),
@@ -821,7 +856,10 @@ class _DashboardContent extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: AppSizes.p16),
             sliver: SliverToBoxAdapter(
               child: RepaintBoundary(
-                child: screen._buildUpcomingReminderCard(context, upcomingReminder!),
+                child: screen._buildUpcomingReminderCard(
+                  context,
+                  upcomingReminder!,
+                ),
               ),
             ),
           ),
@@ -843,7 +881,10 @@ class _DashboardContent extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: AppSizes.p16),
             sliver: SliverToBoxAdapter(
               child: RepaintBoundary(
-                child: screen._buildRecentNotificationsCard(context, recentNotifications),
+                child: screen._buildRecentNotificationsCard(
+                  context,
+                  recentNotifications,
+                ),
               ),
             ),
           ),
@@ -852,9 +893,7 @@ class _DashboardContent extends StatelessWidget {
         SliverPadding(
           padding: const EdgeInsets.symmetric(horizontal: AppSizes.p16),
           sliver: SliverToBoxAdapter(
-            child: RepaintBoundary(
-              child: screen._buildQuickActions(context),
-            ),
+            child: RepaintBoundary(child: screen._buildQuickActions(context)),
           ),
         ),
         const SliverToBoxAdapter(child: SizedBox(height: AppSizes.p48)),

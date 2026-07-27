@@ -1,8 +1,5 @@
 class TimeSeriesPoint {
-  const TimeSeriesPoint({
-    required this.period,
-    required this.value,
-  });
+  const TimeSeriesPoint({required this.period, required this.value});
 
   final DateTime period;
   final double value;
@@ -21,10 +18,7 @@ class IncomeExpensePoint {
 }
 
 class BreakdownEntry {
-  const BreakdownEntry({
-    required this.label,
-    required this.value,
-  });
+  const BreakdownEntry({required this.label, required this.value});
 
   final String label;
   final double value;

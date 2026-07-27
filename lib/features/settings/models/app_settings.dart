@@ -10,7 +10,7 @@ class AppSettings {
   String key = 'default';
 
   String themeMode = 'system'; // 'light', 'dark', 'system'
-  
+
   String currency = 'PKR';
 
   bool isPinLockEnabled = false;

@@ -72,13 +72,7 @@ void main() {
     // Verify stream emits in sequence:
     // 1. Initial list (empty)
     // 2. Updated list (1 item)
-    expect(
-      stream,
-      emitsInOrder([
-        isEmpty,
-        hasLength(1),
-      ]),
-    );
+    expect(stream, emitsInOrder([isEmpty, hasLength(1)]));
 
     final business = Business()
       ..name = 'Real Estate Fund'

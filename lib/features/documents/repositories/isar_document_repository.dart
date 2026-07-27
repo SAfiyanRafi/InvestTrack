@@ -15,10 +15,9 @@ class IsarDocumentRepository implements DocumentRepository {
 
   @override
   Stream<List<DocumentAttachment>> watchAllAttachments() {
-    return _isar.documentAttachments
-        .where()
-        .sortByUploadedAtDesc()
-        .watch(fireImmediately: true);
+    return _isar.documentAttachments.where().sortByUploadedAtDesc().watch(
+      fireImmediately: true,
+    );
   }
 
   @override

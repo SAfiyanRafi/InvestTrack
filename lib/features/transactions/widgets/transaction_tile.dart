@@ -17,7 +17,7 @@ class TransactionTile extends StatelessWidget {
 
   final Transaction transaction;
   final VoidCallback onTap;
-  
+
   /// Optional name of the business this transaction belongs to (shown in global lists)
   final String? businessName;
 
@@ -28,13 +28,15 @@ class TransactionTile extends StatelessWidget {
 
     // Resolve details based on TransactionType
     final details = _getTransactionDetails(transaction.type);
-    
+
     // Amount styling
     final sign = details.amountSign;
     final amountColor = details.amountColor;
-    
+
     final signedAmount = sign == '-' ? -transaction.amount : transaction.amount;
-    final formattedAmount = CurrencyFormatter.formatSignedCurrency(signedAmount);
+    final formattedAmount = CurrencyFormatter.formatSignedCurrency(
+      signedAmount,
+    );
     final formattedDate = DateFormat('MMM d, y').format(transaction.date);
 
     return InkWell(
@@ -50,14 +52,19 @@ class TransactionTile extends StatelessWidget {
             final compact = constraints.maxWidth < 380;
 
             final metaDateStyle = theme.textTheme.bodySmall?.copyWith(
-              color: isDark ? AppColors.darkTextSecondary : AppColors.lightTextSecondary,
+              color: isDark
+                  ? AppColors.darkTextSecondary
+                  : AppColors.lightTextSecondary,
             );
 
             final amountWidget = ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: compact ? constraints.maxWidth : 120),
+              constraints: BoxConstraints(
+                maxWidth: compact ? constraints.maxWidth : 120,
+              ),
               child: Column(
-                crossAxisAlignment:
-                    compact ? CrossAxisAlignment.start : CrossAxisAlignment.end,
+                crossAxisAlignment: compact
+                    ? CrossAxisAlignment.start
+                    : CrossAxisAlignment.end,
                 children: [
                   FittedBox(
                     fit: BoxFit.scaleDown,
@@ -69,12 +76,15 @@ class TransactionTile extends StatelessWidget {
                       ),
                     ),
                   ),
-                  if (transaction.attachmentPath != null && transaction.attachmentPath!.isNotEmpty) ...[
+                  if (transaction.attachmentPath != null &&
+                      transaction.attachmentPath!.isNotEmpty) ...[
                     AppSizes.gapH4,
                     Icon(
                       Icons.attach_file,
                       size: 14,
-                      color: isDark ? AppColors.darkTextMuted : AppColors.lightTextMuted,
+                      color: isDark
+                          ? AppColors.darkTextMuted
+                          : AppColors.lightTextMuted,
                     ),
                   ],
                 ],
@@ -90,7 +100,9 @@ class TransactionTile extends StatelessWidget {
                       : details.typeName,
                   style: theme.textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.w600,
-                    color: isDark ? AppColors.darkTextPrimary : AppColors.lightTextPrimary,
+                    color: isDark
+                        ? AppColors.darkTextPrimary
+                        : AppColors.lightTextPrimary,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -101,7 +113,8 @@ class TransactionTile extends StatelessWidget {
                   runSpacing: AppSizes.p4,
                   children: [
                     Text(formattedDate, style: metaDateStyle),
-                    if (transaction.category != null && transaction.category!.isNotEmpty)
+                    if (transaction.category != null &&
+                        transaction.category!.isNotEmpty)
                       Text(
                         '• ${transaction.category}',
                         style: metaDateStyle,

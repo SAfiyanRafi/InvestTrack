@@ -105,9 +105,9 @@ class _AddEditTransactionScreenState
     } catch (e) {
       if (!mounted) return;
       setState(() => _isLoading = false);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to load transaction: $e')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Failed to load transaction: $e')));
     }
   }
 
@@ -146,9 +146,9 @@ class _AddEditTransactionScreenState
   Future<void> _saveForm() async {
     if (!_formKey.currentState!.validate()) return;
     if (_selectedBusinessId == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select a business')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Please select a business')));
       return;
     }
     if (_selectedType == null) {
@@ -204,7 +204,8 @@ class _AddEditTransactionScreenState
       builder: (context) => AlertDialog(
         title: const Text('Delete Transaction'),
         content: const Text(
-            'Are you sure you want to permanently delete this transaction?'),
+          'Are you sure you want to permanently delete this transaction?',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
@@ -275,8 +276,9 @@ class _AddEditTransactionScreenState
                 AppSizes.gapH16,
                 Text(
                   'Transaction Not Found',
-                  style: theme.textTheme.titleMedium
-                      ?.copyWith(fontWeight: FontWeight.bold),
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 AppSizes.gapH8,
                 Text(
@@ -332,8 +334,7 @@ class _AddEditTransactionScreenState
                 AppSizes.gapH8,
                 asyncBusinesses.when(
                   loading: () => const LinearProgressIndicator(),
-                  error: (err, stack) =>
-                      Text('Error loading businesses: $err'),
+                  error: (err, stack) => Text('Error loading businesses: $err'),
                   data: (businesses) {
                     // In CREATE mode: only show Active businesses.
                     // In EDIT mode: show ALL businesses (including Archived) so
@@ -343,8 +344,8 @@ class _AddEditTransactionScreenState
                     final dropdownBusinesses = _isEditMode
                         ? businesses
                         : businesses
-                            .where((b) => b.status == 'Active')
-                            .toList();
+                              .where((b) => b.status == 'Active')
+                              .toList();
 
                     return DropdownButtonFormField<int>(
                       initialValue: _selectedBusinessId,
@@ -401,9 +402,7 @@ class _AddEditTransactionScreenState
                           initialValue: _selectedType,
                           isExpanded: true,
                           menuMaxHeight: 360,
-                          decoration: const InputDecoration(
-                            hintText: 'Select',
-                          ),
+                          decoration: const InputDecoration(hintText: 'Select'),
                           items: TransactionType.values.map((type) {
                             return DropdownMenuItem(
                               value: type,
@@ -433,11 +432,7 @@ class _AddEditTransactionScreenState
 
                     if (compact) {
                       return Column(
-                        children: [
-                          typeField,
-                          AppSizes.gapH16,
-                          categoryField,
-                        ],
+                        children: [typeField, AppSizes.gapH16, categoryField],
                       );
                     }
 
@@ -463,8 +458,9 @@ class _AddEditTransactionScreenState
                       labelText:
                           'Amount (${CurrencyConfig.defaultConfig.symbol.trim()}) *',
                       hintText: 'e.g. 1500.00',
-                      keyboardType:
-                          const TextInputType.numberWithOptions(decimal: true),
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Amount is required';
@@ -527,11 +523,7 @@ class _AddEditTransactionScreenState
 
                     if (compact) {
                       return Column(
-                        children: [
-                          amountField,
-                          AppSizes.gapH16,
-                          dateField,
-                        ],
+                        children: [amountField, AppSizes.gapH16, dateField],
                       );
                     }
 
@@ -648,8 +640,7 @@ class _AddEditTransactionScreenState
                       style: IconButton.styleFrom(
                         backgroundColor: theme.colorScheme.primary,
                         shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(AppSizes.r12),
+                          borderRadius: BorderRadius.circular(AppSizes.r12),
                         ),
                       ),
                       icon: const Icon(Icons.add, color: Colors.white),
@@ -684,10 +675,7 @@ class _AddEditTransactionScreenState
                     ),
                     AppSizes.gapW16,
                     Expanded(
-                      child: AppButton(
-                        onPressed: _saveForm,
-                        text: 'Save',
-                      ),
+                      child: AppButton(onPressed: _saveForm, text: 'Save'),
                     ),
                   ],
                 ),
@@ -705,8 +693,6 @@ class _AddEditTransactionScreenState
     if (value.isEmpty) return value;
     final regex = RegExp(r'(?<=[a-z])(?=[A-Z])');
     final words = value.split(regex);
-    return words
-        .map((w) => '${w[0].toUpperCase()}${w.substring(1)}')
-        .join(' ');
+    return words.map((w) => '${w[0].toUpperCase()}${w.substring(1)}').join(' ');
   }
 }

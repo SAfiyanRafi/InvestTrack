@@ -27,7 +27,9 @@ class PortfolioReportData {
   int get businessCount => filteredLedger.businesses.length;
 }
 
-final portfolioReportProvider = Provider<AsyncValue<PortfolioReportData>>((ref) {
+final portfolioReportProvider = Provider<AsyncValue<PortfolioReportData>>((
+  ref,
+) {
   final filteredLedgerAsync = ref.watch(reportFilteredLedgerProvider);
 
   return filteredLedgerAsync.when(

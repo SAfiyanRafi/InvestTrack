@@ -27,7 +27,9 @@ Future<void> showAppErrorDialog(
               const SizedBox(height: 12),
               Text(
                 details,
-                style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurface.withOpacity(0.7)),
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurface.withOpacity(0.7),
+                ),
               ),
             ],
           ],

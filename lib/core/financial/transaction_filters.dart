@@ -22,15 +22,12 @@ List<Transaction> filterByDateRange(
   DateTime end,
 ) {
   final normalizedStart = DateTime(start.year, start.month, start.day);
-  final normalizedEnd =
-      DateTime(end.year, end.month, end.day, 23, 59, 59, 999);
+  final normalizedEnd = DateTime(end.year, end.month, end.day, 23, 59, 59, 999);
 
-  return transactions
-      .where((t) {
-        final date = DateTime(t.date.year, t.date.month, t.date.day);
-        return !date.isBefore(normalizedStart) && !date.isAfter(normalizedEnd);
-      })
-      .toList();
+  return transactions.where((t) {
+    final date = DateTime(t.date.year, t.date.month, t.date.day);
+    return !date.isBefore(normalizedStart) && !date.isAfter(normalizedEnd);
+  }).toList();
 }
 
 /// Returns transactions for the calendar quarter containing [reference].
@@ -38,10 +35,9 @@ List<Transaction> filterByQuarter(
   Iterable<Transaction> transactions,
   DateTime reference,
 ) {
-  final (start, end) =
-      const ReportFilter(period: ReportPeriod.quarter).copyWith(
-    referenceDate: reference,
-  ).resolveDateRange(reference);
+  final (start, end) = const ReportFilter(
+    period: ReportPeriod.quarter,
+  ).copyWith(referenceDate: reference).resolveDateRange(reference);
 
   if (start == null || end == null) return transactions.toList();
   return filterByDateRange(transactions, start, end);
@@ -52,10 +48,9 @@ List<Transaction> filterByYear(
   Iterable<Transaction> transactions,
   DateTime reference,
 ) {
-  final (start, end) =
-      const ReportFilter(period: ReportPeriod.year).copyWith(
-    referenceDate: reference,
-  ).resolveDateRange(reference);
+  final (start, end) = const ReportFilter(
+    period: ReportPeriod.year,
+  ).copyWith(referenceDate: reference).resolveDateRange(reference);
 
   if (start == null || end == null) return transactions.toList();
   return filterByDateRange(transactions, start, end);
@@ -84,16 +79,16 @@ List<Transaction> applyReportFilter(
 
   // Scope to businesses matching the status filter.
   if (businesses != null && filter.businessStatus != 'All') {
-    final allowedIds = filterBusinessesByStatus(businesses, filter.businessStatus)
-        .map((b) => b.id)
-        .toSet();
+    final allowedIds = filterBusinessesByStatus(
+      businesses,
+      filter.businessStatus,
+    ).map((b) => b.id).toSet();
     result = result.where((t) => allowedIds.contains(t.businessId)).toList();
   }
 
   // Business ID filter takes precedence over status scoping when both apply.
   if (filter.businessId != null) {
-    result =
-        result.where((t) => t.businessId == filter.businessId).toList();
+    result = result.where((t) => t.businessId == filter.businessId).toList();
   }
 
   // Date range filter.
@@ -110,7 +105,9 @@ List<Transaction> applyReportFilter(
   // Category filter.
   if (filter.category != null) {
     result = result
-        .where((t) => t.category?.toLowerCase() == filter.category!.toLowerCase())
+        .where(
+          (t) => t.category?.toLowerCase() == filter.category!.toLowerCase(),
+        )
         .toList();
   }
 
@@ -145,7 +142,10 @@ FilteredLedger buildFilteredLedger({
   required ReportFilter filter,
   DateTime? now,
 }) {
-  final filteredBusinesses = filterBusinessesByStatus(businesses, filter.businessStatus);
+  final filteredBusinesses = filterBusinessesByStatus(
+    businesses,
+    filter.businessStatus,
+  );
   final filteredTransactions = applyReportFilter(
     transactions,
     filter,

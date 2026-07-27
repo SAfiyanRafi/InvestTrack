@@ -22,13 +22,12 @@ class AnalyticsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final filter = ref.watch(analyticsFilterNotifierProvider);
     final filterNotifier = ref.read(analyticsFilterNotifierProvider.notifier);
-    final businesses = ref.watch(watchBusinessesProvider).valueOrNull ?? const <Business>[];
+    final businesses =
+        ref.watch(watchBusinessesProvider).valueOrNull ?? const <Business>[];
     final asyncAnalytics = ref.watch(analyticsProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Analytics'),
-      ),
+      appBar: AppBar(title: const Text('Analytics')),
       body: asyncAnalytics.when(
         loading: () => const AppLoader(message: 'Preparing analytics...'),
         error: (err, _) => Center(child: Text('Error: $err')),
@@ -44,7 +43,12 @@ class AnalyticsScreen extends ConsumerWidget {
                       AppSizes.p16,
                       0,
                     ),
-                    child: _buildFilterBar(context, filter, filterNotifier, businesses),
+                    child: _buildFilterBar(
+                      context,
+                      filter,
+                      filterNotifier,
+                      businesses,
+                    ),
                   ),
                 ),
                 const SliverToBoxAdapter(child: SizedBox(height: AppSizes.p16)),
@@ -66,7 +70,12 @@ class AnalyticsScreen extends ConsumerWidget {
                     AppSizes.p16,
                     0,
                   ),
-                  child: _buildFilterBar(context, filter, filterNotifier, businesses),
+                  child: _buildFilterBar(
+                    context,
+                    filter,
+                    filterNotifier,
+                    businesses,
+                  ),
                 ),
               ),
               const SliverToBoxAdapter(child: SizedBox(height: AppSizes.p16)),
@@ -82,7 +91,8 @@ class AnalyticsScreen extends ConsumerWidget {
                         context,
                         data.portfolioGrowthSeries,
                         color: AppColors.primary,
-                        valueFormatter: (value) => CurrencyFormatter.formatCompactCurrency(value),
+                        valueFormatter: (value) =>
+                            CurrencyFormatter.formatCompactCurrency(value),
                       ),
                     ),
                     AppSizes.gapH16,
@@ -94,7 +104,8 @@ class AnalyticsScreen extends ConsumerWidget {
                         context,
                         data.roiTrendSeries,
                         color: AppColors.success,
-                        valueFormatter: (value) => '${value.toStringAsFixed(1)}%',
+                        valueFormatter: (value) =>
+                            '${value.toStringAsFixed(1)}%',
                       ),
                     ),
                     AppSizes.gapH16,
@@ -102,7 +113,10 @@ class AnalyticsScreen extends ConsumerWidget {
                       context,
                       title: 'Income vs Expenses',
                       subtitle: 'Monthly operating comparison',
-                      child: _buildIncomeExpenseChart(context, data.incomeExpenseSeries),
+                      child: _buildIncomeExpenseChart(
+                        context,
+                        data.incomeExpenseSeries,
+                      ),
                     ),
                     AppSizes.gapH16,
                     _buildSectionCard(
@@ -112,8 +126,10 @@ class AnalyticsScreen extends ConsumerWidget {
                       child: _buildPieBreakdown(
                         context,
                         data.investmentAllocation,
-                        emptyMessage: 'No invested capital recorded for the current filter.',
-                        valueFormatter: (value) => CurrencyFormatter.formatCompactCurrency(value),
+                        emptyMessage:
+                            'No invested capital recorded for the current filter.',
+                        valueFormatter: (value) =>
+                            CurrencyFormatter.formatCompactCurrency(value),
                       ),
                     ),
                     AppSizes.gapH16,
@@ -124,8 +140,10 @@ class AnalyticsScreen extends ConsumerWidget {
                       child: _buildPieBreakdown(
                         context,
                         data.profitContribution,
-                        emptyMessage: 'No positive profit contribution is available yet.',
-                        valueFormatter: (value) => CurrencyFormatter.formatCompactCurrency(value),
+                        emptyMessage:
+                            'No positive profit contribution is available yet.',
+                        valueFormatter: (value) =>
+                            CurrencyFormatter.formatCompactCurrency(value),
                       ),
                     ),
                     AppSizes.gapH16,
@@ -136,8 +154,10 @@ class AnalyticsScreen extends ConsumerWidget {
                       child: _buildPieBreakdown(
                         context,
                         data.expenseCategories,
-                        emptyMessage: 'No categorized expenses exist for the current selection.',
-                        valueFormatter: (value) => CurrencyFormatter.formatCompactCurrency(value),
+                        emptyMessage:
+                            'No categorized expenses exist for the current selection.',
+                        valueFormatter: (value) =>
+                            CurrencyFormatter.formatCompactCurrency(value),
                       ),
                     ),
                     AppSizes.gapH16,
@@ -148,7 +168,8 @@ class AnalyticsScreen extends ConsumerWidget {
                       child: _buildPieBreakdown(
                         context,
                         data.transactionDistribution,
-                        emptyMessage: 'No transaction distribution is available yet.',
+                        emptyMessage:
+                            'No transaction distribution is available yet.',
                         valueFormatter: (value) => value.toStringAsFixed(0),
                       ),
                     ),
@@ -391,10 +412,7 @@ class AnalyticsScreen extends ConsumerWidget {
             ),
           ),
           AppSizes.gapH4,
-          Text(
-            subtitle,
-            style: theme.textTheme.bodySmall,
-          ),
+          Text(subtitle, style: theme.textTheme.bodySmall),
           AppSizes.gapH12,
           child,
         ],
@@ -421,10 +439,8 @@ class AnalyticsScreen extends ConsumerWidget {
           gridData: FlGridData(
             show: true,
             drawVerticalLine: false,
-            getDrawingHorizontalLine: (_) => FlLine(
-              color: color.withValues(alpha: 0.12),
-              strokeWidth: 1,
-            ),
+            getDrawingHorizontalLine: (_) =>
+                FlLine(color: color.withValues(alpha: 0.12), strokeWidth: 1),
           ),
           titlesData: FlTitlesData(
             leftTitles: AxisTitles(
@@ -449,7 +465,9 @@ class AnalyticsScreen extends ConsumerWidget {
                   return Padding(
                     padding: const EdgeInsets.only(top: 6),
                     child: Text(
-                      DateFormat('MMM').format(series[index].period as DateTime),
+                      DateFormat(
+                        'MMM',
+                      ).format(series[index].period as DateTime),
                       style: Theme.of(context).textTheme.labelSmall,
                     ),
                   );
@@ -475,7 +493,8 @@ class AnalyticsScreen extends ConsumerWidget {
               ),
               spots: List.generate(
                 series.length,
-                (index) => FlSpot(index.toDouble(), series[index].value as double),
+                (index) =>
+                    FlSpot(index.toDouble(), series[index].value as double),
               ),
               barWidth: 3,
               dotData: FlDotData(show: series.length == 1),
@@ -488,7 +507,9 @@ class AnalyticsScreen extends ConsumerWidget {
 
   Widget _buildIncomeExpenseChart(BuildContext context, List<dynamic> series) {
     if (series.isEmpty) {
-      return _buildInlineEmpty('No income or expense activity for the current filter.');
+      return _buildInlineEmpty(
+        'No income or expense activity for the current filter.',
+      );
     }
 
     return SizedBox(
@@ -520,15 +541,21 @@ class AnalyticsScreen extends ConsumerWidget {
                   return Padding(
                     padding: const EdgeInsets.only(top: 6),
                     child: Text(
-                      DateFormat('MMM').format(series[index].period as DateTime),
+                      DateFormat(
+                        'MMM',
+                      ).format(series[index].period as DateTime),
                       style: Theme.of(context).textTheme.labelSmall,
                     ),
                   );
                 },
               ),
             ),
-            rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-            topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+            rightTitles: const AxisTitles(
+              sideTitles: SideTitles(showTitles: false),
+            ),
+            topTitles: const AxisTitles(
+              sideTitles: SideTitles(showTitles: false),
+            ),
           ),
           barGroups: List.generate(series.length, (index) {
             final point = series[index];
@@ -562,13 +589,18 @@ class AnalyticsScreen extends ConsumerWidget {
     required String emptyMessage,
     required String Function(double value) valueFormatter,
   }) {
-    final filtered = entries.where((entry) => (entry.value as double) > 0).toList();
+    final filtered = entries
+        .where((entry) => (entry.value as double) > 0)
+        .toList();
     if (filtered.isEmpty) {
       return _buildInlineEmpty(emptyMessage);
     }
 
     final colors = _chartColors;
-    final total = filtered.fold<double>(0, (sum, entry) => sum + (entry.value as double));
+    final total = filtered.fold<double>(
+      0,
+      (sum, entry) => sum + (entry.value as double),
+    );
 
     return Column(
       children: [
@@ -589,9 +621,9 @@ class AnalyticsScreen extends ConsumerWidget {
                   radius: 58,
                   title: '${percent.toStringAsFixed(0)}%',
                   titleStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 );
               }),
             ),
@@ -665,10 +697,7 @@ class AnalyticsScreen extends ConsumerWidget {
       child: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppSizes.p24),
-          child: Text(
-            message,
-            textAlign: TextAlign.center,
-          ),
+          child: Text(message, textAlign: TextAlign.center),
         ),
       ),
     );
@@ -679,7 +708,9 @@ class AnalyticsScreen extends ConsumerWidget {
       case ReportPeriod.allTime:
         return 'All History';
       case ReportPeriod.month:
-        return DateFormat('MMMM y').format(filter.referenceDate ?? DateTime.now());
+        return DateFormat(
+          'MMMM y',
+        ).format(filter.referenceDate ?? DateTime.now());
       case ReportPeriod.quarter:
         final date = filter.referenceDate ?? DateTime.now();
         final quarter = ((date.month - 1) ~/ 3) + 1;
@@ -710,13 +741,13 @@ class AnalyticsScreen extends ConsumerWidget {
   }
 
   List<Color> get _chartColors => const [
-        AppColors.primary,
-        AppColors.secondary,
-        AppColors.success,
-        AppColors.warning,
-        AppColors.error,
-        Color(0xFF0EA5E9),
-        Color(0xFF14B8A6),
-        Color(0xFFF97316),
-      ];
+    AppColors.primary,
+    AppColors.secondary,
+    AppColors.success,
+    AppColors.warning,
+    AppColors.error,
+    Color(0xFF0EA5E9),
+    Color(0xFF14B8A6),
+    Color(0xFFF97316),
+  ];
 }
