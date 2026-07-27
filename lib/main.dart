@@ -7,6 +7,7 @@ import 'package:investtrack/core/theme/app_theme.dart';
 import 'package:investtrack/core/utils/currency_formatter.dart';
 import 'package:investtrack/features/settings/providers/settings_provider.dart';
 
+/// Main entry point for InvestTrack offline-first portfolio intelligence application.
 void main() async {
   // Ensure Flutter engine bindings are fully initialized before async database runs
   WidgetsFlutterBinding.ensureInitialized();
