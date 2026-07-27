@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "1070531314859",
-    "project_id": "investtrack-683b4",
-    "storage_bucket": "investtrack-683b4.firebasestorage.app"
+    "project_number": "146066824413",
+    "project_id": "investtrack-43a7a",
+    "storage_bucket": "investtrack-43a7a.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1070531314859:android:eebbc8ff637485f961e3ee",
+        "mobilesdk_app_id": "1:146066824413:android:292b5dc38c9de8aa30cf34",
         "android_client_info": {
-          "package_name": "com.investtrack.investtrac"
+          "package_name": "com.investtrack.investtrack"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDgQvcw7rtmmkHKJ3t2l48QW7tXFLMrtw4"
+          "current_key": "AIzaSyDaIPPsqEzLKUcB8-Zqa0HaD6qYzIS1uok"
         }
       ],
       "services": {
