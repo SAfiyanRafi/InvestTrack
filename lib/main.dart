@@ -129,3 +129,4 @@ class StartupSplashScreen extends StatelessWidget {
     );
   }
 }
+/// Main entry point for InvestTrack offline-first portfolio intelligence application.
