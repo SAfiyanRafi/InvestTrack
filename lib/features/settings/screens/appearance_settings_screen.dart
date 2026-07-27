@@ -52,13 +52,11 @@ class AppearanceSettingsScreen extends ConsumerWidget {
                           ? 'Follow system theme'
                           : 'Use ${option[0].toUpperCase() + option.substring(1)} mode',
                     ),
-                    onChanged: (value) {
-                      if (value != null) {
-                        ref
+                    onChanged: (value) => value != null
+                        ? ref
                             .read(appSettingsNotifierProvider.notifier)
-                            .updateThemeMode(value);
-                      }
-                    },
+                            .updateThemeMode(value)
+                        : null,
                   );
                 }).toList(),
               ),

@@ -1,6 +1,5 @@
 import 'package:isar/isar.dart';
 
-import 'package:investtrack/core/database/isar_database.dart';
 import 'package:investtrack/features/settings/models/app_settings.dart';
 import 'package:investtrack/features/settings/repositories/settings_repository.dart';
 

@@ -63,7 +63,7 @@ class AboutScreen extends StatelessWidget {
                   ),
                 ),
                 AppSizes.gapH8,
-                Text(
+                const Text(
                   'Open source licenses for InvestTrack components will be shown here in a future update.',
                 ),
               ],

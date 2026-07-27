@@ -89,7 +89,7 @@ class StartupSplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: theme.colorScheme.background,
+      backgroundColor: theme.colorScheme.surface,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 32.0),
@@ -115,7 +115,7 @@ class StartupSplashScreen extends StatelessWidget {
                 '© 2026 Safiyan.co. All rights reserved.',
                 textAlign: TextAlign.center,
                 style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.textTheme.bodySmall?.color?.withOpacity(0.75),
+                  color: theme.textTheme.bodySmall?.color?.withValues(alpha: 0.75),
                 ),
               ),
               const SizedBox(height: 16),
