@@ -19,7 +19,7 @@ void main() {
 
       expect(result.initialized, isTrue);
       expect(result.error, isNull);
-      expect(result.isar, isNotNull);
+      expect(result.database, isNotNull);
     });
   });
 }
