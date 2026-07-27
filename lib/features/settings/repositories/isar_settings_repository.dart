@@ -1,8 +1,8 @@
 import 'package:isar/isar.dart';
 
-import '../../../core/database/isar_database.dart';
-import '../models/app_settings.dart';
-import 'settings_repository.dart';
+import 'package:investtrack/core/database/isar_database.dart';
+import 'package:investtrack/features/settings/models/app_settings.dart';
+import 'package:investtrack/features/settings/repositories/settings_repository.dart';
 
 class IsarSettingsRepository implements SettingsRepository {
   IsarSettingsRepository(this._isar);

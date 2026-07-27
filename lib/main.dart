@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'core/database/isar_database.dart';
-import 'core/router/app_router.dart';
-import 'core/startup/app_startup_warmup.dart';
-import 'core/theme/app_theme.dart';
-import 'core/utils/currency_formatter.dart';
-import 'features/settings/providers/settings_provider.dart';
+import 'package:investtrack/core/database/isar_database.dart';
+import 'package:investtrack/core/router/app_router.dart';
+import 'package:investtrack/core/startup/app_startup_warmup.dart';
+import 'package:investtrack/core/theme/app_theme.dart';
+import 'package:investtrack/core/utils/currency_formatter.dart';
+import 'package:investtrack/features/settings/providers/settings_provider.dart';
 
 void main() async {
   // Ensure Flutter engine bindings are fully initialized before async database runs
@@ -38,7 +38,7 @@ class InvestTrackApp extends ConsumerWidget {
       data: (_) {
         final router = ref.watch(appRouterProvider);
         final themeMode = settingsState.when(
-          data: (settings){
+          data: (settings) {
             CurrencyFormatter.updateCurrency(settings.currency);
             return _themeModeFromString(settings.themeMode);
           },

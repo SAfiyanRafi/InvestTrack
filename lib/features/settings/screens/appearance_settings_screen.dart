@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../core/constants/app_sizes.dart';
-import '../../../shared/widgets/app_card.dart';
-import '../providers/settings_provider.dart';
+import 'package:investtrack/core/constants/app_sizes.dart';
+import 'package:investtrack/shared/widgets/app_card.dart';
+import 'package:investtrack/features/settings/providers/settings_provider.dart';
 
 class AppearanceSettingsScreen extends ConsumerWidget {
   const AppearanceSettingsScreen({super.key});

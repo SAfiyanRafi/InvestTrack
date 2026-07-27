@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_sizes.dart';
-import '../../../shared/widgets/app_loader.dart';
-import '../../../shared/widgets/app_text_field.dart';
-import '../providers/business_provider.dart';
-import '../widgets/business_card.dart';
+import 'package:investtrack/core/constants/app_colors.dart';
+import 'package:investtrack/core/constants/app_sizes.dart';
+import 'package:investtrack/shared/widgets/app_loader.dart';
+import 'package:investtrack/shared/widgets/app_text_field.dart';
+import 'package:investtrack/features/businesses/providers/business_provider.dart';
+import 'package:investtrack/features/businesses/widgets/business_card.dart';
 
 /// Screen listing all businesses with search, filtering, and sorting capabilities.
 class BusinessesListScreen extends ConsumerWidget {
