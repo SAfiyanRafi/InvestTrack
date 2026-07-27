@@ -12,6 +12,8 @@ import '../../features/notifications/models/reminder.dart';
 import '../../features/notifications/screens/add_edit_reminder_screen.dart';
 import '../../features/notifications/screens/notification_center_screen.dart';
 import '../../features/reports/screens/reports_screen.dart';
+import '../../features/settings/screens/about_screen.dart';
+import '../../features/settings/screens/appearance_settings_screen.dart';
 import '../../features/settings/screens/settings_screen.dart';
 import '../../features/transactions/screens/transactions_screen.dart';
 import '../../features/transactions/screens/add_edit_transaction_screen.dart';
@@ -158,6 +160,16 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                     path: 'documents',
                     parentNavigatorKey: _rootNavigatorKey,
                     builder: (context, state) => const DocumentsScreen(),
+                  ),
+                  GoRoute(
+                    path: 'appearance',
+                    parentNavigatorKey: _rootNavigatorKey,
+                    builder: (context, state) => const AppearanceSettingsScreen(),
+                  ),
+                  GoRoute(
+                    path: 'about',
+                    parentNavigatorKey: _rootNavigatorKey,
+                    builder: (context, state) => const AboutScreen(),
                   ),
                 ],
               ),

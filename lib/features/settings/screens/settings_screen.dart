@@ -39,6 +39,28 @@ class SettingsScreen extends StatelessWidget {
           AppSizes.gapH16,
           AppCard(
             padding: EdgeInsets.zero,
+            onTap: () => context.push('/settings/appearance'),
+            child: const ListTile(
+              leading: Icon(Icons.color_lens_outlined),
+              title: Text('Appearance & Locale'),
+              subtitle: Text('Theme mode, currency, and locale preferences'),
+              trailing: Icon(Icons.chevron_right),
+            ),
+          ),
+          AppSizes.gapH16,
+          AppCard(
+            padding: EdgeInsets.zero,
+            onTap: () => context.push('/settings/about'),
+            child: const ListTile(
+              leading: Icon(Icons.info_outline),
+              title: Text('About'),
+              subtitle: Text('App version, licenses, and developer info'),
+              trailing: Icon(Icons.chevron_right),
+            ),
+          ),
+          AppSizes.gapH16,
+          AppCard(
+            padding: EdgeInsets.zero,
             child: ListTile(
               leading: const Icon(Icons.folder_copy_outlined),
               title: const Text('Documents & Attachments'),
