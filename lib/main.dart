@@ -38,7 +38,7 @@ class InvestTrackApp extends ConsumerWidget {
       data: (_) {
         final router = ref.watch(appRouterProvider);
         final themeMode = settingsState.when(
-          data: (settings) {
+          data: (settings){
             CurrencyFormatter.updateCurrency(settings.currency);
             return _themeModeFromString(settings.themeMode);
           },

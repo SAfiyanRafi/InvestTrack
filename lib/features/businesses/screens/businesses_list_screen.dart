@@ -210,8 +210,9 @@ class BusinessesListScreen extends ConsumerWidget {
                           label: Text(status),
                           selected: isSelected,
                           onSelected: (selected) {
-                            if (selected)
+                            if (selected) {
                               filterNotifier.setStatusFilter(status);
+                            }
                           },
                         ),
                       );
