@@ -131,7 +131,7 @@ class _NotificationCenterScreenState
                     ),
                   ),
                 ),
-                SliverToBoxAdapter(child: const SizedBox(height: AppSizes.p12)),
+                const SliverToBoxAdapter(child: SizedBox(height: AppSizes.p12)),
               ];
             },
             body: _buildNotificationsList(),
