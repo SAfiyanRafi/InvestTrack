@@ -54,8 +54,8 @@ class AppearanceSettingsScreen extends ConsumerWidget {
                     ),
                     onChanged: (value) => value != null
                         ? ref
-                            .read(appSettingsNotifierProvider.notifier)
-                            .updateThemeMode(value)
+                              .read(appSettingsNotifierProvider.notifier)
+                              .updateThemeMode(value)
                         : null,
                   );
                 }).toList(),

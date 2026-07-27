@@ -115,7 +115,9 @@ class StartupSplashScreen extends StatelessWidget {
                 '© 2026 Safiyan.co. All rights reserved.',
                 textAlign: TextAlign.center,
                 style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.textTheme.bodySmall?.color?.withValues(alpha: 0.75),
+                  color: theme.textTheme.bodySmall?.color?.withValues(
+                    alpha: 0.75,
+                  ),
                 ),
               ),
               const SizedBox(height: 16),
