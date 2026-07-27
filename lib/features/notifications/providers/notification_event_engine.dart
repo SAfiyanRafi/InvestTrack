@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import '../../../core/services/local_notification_service.dart';
 import '../../documents/models/document_attachment.dart';
 import '../../transactions/models/transaction.dart';
 import '../models/app_notification.dart';
@@ -185,6 +185,13 @@ class NotificationEventEngine {
       ..actionRoute = actionRoute;
 
     await _notificationRepo.saveNotification(notification);
+    await LocalNotificationService.showNotification(
+      notificationId: notification.id == 0
+          ? DateTime.now().millisecondsSinceEpoch.remainder(10000)
+          : notification.id,
+      title: title,
+      body: body,
+    );
   }
 }
 

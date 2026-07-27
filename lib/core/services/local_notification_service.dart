@@ -93,6 +93,27 @@ class LocalNotificationService {
     );
   }
 
+  static Future<void> showNotification({
+    required int notificationId,
+    required String title,
+    required String body,
+  }) async {
+    await initialize();
+
+    const details = NotificationDetails(
+      android: AndroidNotificationDetails(
+        'investtrack_events',
+        'InvestTrack Events',
+        channelDescription: 'Immediate event alerts for InvestTrack.',
+        importance: Importance.high,
+        priority: Priority.high,
+      ),
+      iOS: DarwinNotificationDetails(),
+    );
+
+    await _plugin.show(notificationId, title, body, details);
+  }
+
   static Future<void> cancelReminder(int reminderId) async {
     await initialize();
     await _plugin.cancel(_notificationIdForReminder(reminderId));

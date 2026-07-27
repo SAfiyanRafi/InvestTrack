@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
@@ -17,22 +19,45 @@ final isarProvider = Provider<Isar>((ref) {
 /// Service class responsible for initializing the Isar database.
 abstract class IsarDatabase {
   /// Initializes the local Isar database.
-  /// Locates the application's documents directory and opens the Isar instance
-  /// with the required schemas.
+  /// Tries the application documents directory first and falls back to a
+  /// temporary directory if the primary location is unavailable.
   static Future<Isar> init() async {
-    final dir = await getApplicationDocumentsDirectory();
-    
-    return Isar.open(
-      [
-        AppSettingsSchema,
-        BusinessSchema,
-        TransactionSchema,
-        DocumentAttachmentSchema,
-        AppNotificationSchema,
-        ReminderSchema,
-      ],
-      directory: dir.path,
-      name: 'investtrack_db',
-    );
+    final candidateDirectories = <Directory>[];
+
+    try {
+      final dir = await getApplicationDocumentsDirectory();
+      candidateDirectories.add(dir);
+    } catch (_) {
+      // Ignore and fall back to a temporary directory.
+    }
+
+    try {
+      final tempDir = await Directory.systemTemp.createTemp('investtrack_');
+      candidateDirectories.add(tempDir);
+    } catch (_) {
+      // If even the temp directory cannot be created, the next open attempt will fail.
+    }
+
+    Object? lastError;
+    for (final dir in candidateDirectories) {
+      try {
+        return Isar.open(
+          [
+            AppSettingsSchema,
+            BusinessSchema,
+            TransactionSchema,
+            DocumentAttachmentSchema,
+            AppNotificationSchema,
+            ReminderSchema,
+          ],
+          directory: dir.path,
+          name: 'investtrack_db',
+        );
+      } catch (error) {
+        lastError = error;
+      }
+    }
+
+    throw StateError('Unable to initialize Isar database. Last error: $lastError');
   }
 }

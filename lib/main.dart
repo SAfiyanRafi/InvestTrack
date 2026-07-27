@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/database/isar_database.dart';
 import 'core/router/app_router.dart';
-import 'core/services/local_notification_service.dart';
 import 'core/startup/app_startup_warmup.dart';
 import 'core/theme/app_theme.dart';
 
@@ -10,15 +9,14 @@ void main() async {
   // Ensure Flutter engine bindings are fully initialized before async database runs
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize the local Isar database instance
-  final isar = await IsarDatabase.init();
-  await LocalNotificationService.initialize();
+  final startupResult = await initializeAppStartup();
 
   runApp(
     ProviderScope(
       overrides: [
-        // Inject the initialized database instance
-        isarProvider.overrideWithValue(isar),
+        if (startupResult.isar != null)
+          // Inject the initialized database instance when available.
+          isarProvider.overrideWithValue(startupResult.isar!),
       ],
       child: const InvestTrackApp(),
     ),

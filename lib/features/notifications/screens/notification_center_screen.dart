@@ -91,62 +91,53 @@ class _NotificationCenterScreenState
       body: TabBarView(
         controller: _tabController,
         children: [
-          Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(
-                  AppSizes.p16,
-                  AppSizes.p12,
-                  AppSizes.p16,
-                  AppSizes.p8,
-                ),
-                child: TextField(
-                  controller: _searchController,
-                  decoration: InputDecoration(
-                    hintText: 'Search notifications...',
-                    prefixIcon: const Icon(Icons.search),
-                    suffixIcon: filter.query.isEmpty
-                        ? null
-                        : IconButton(
-                            icon: const Icon(Icons.clear),
-                            onPressed: () {
-                              _searchController.clear();
-                              filterNotifier.setQuery('');
-                            },
-                          ),
+          NestedScrollView(
+            headerSliverBuilder: (context, innerBoxScrolled) {
+              return [
+                SliverPersistentHeader(
+                  pinned: true,
+                  delegate: _SearchBarHeader(
+                    searchController: _searchController,
+                    query: filter.query,
+                    onQueryCleared: () {
+                      _searchController.clear();
+                      filterNotifier.setQuery('');
+                    },
+                    onQueryChanged: filterNotifier.setQuery,
                   ),
-                  onChanged: filterNotifier.setQuery,
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppSizes.p16),
-                child: Wrap(
-                  spacing: AppSizes.p8,
-                  runSpacing: AppSizes.p8,
-                  children: [
-                    FilterChip(
-                      selected: filter.unreadOnly,
-                      label: const Text('Unread Only'),
-                      onSelected: filterNotifier.setUnreadOnly,
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: AppSizes.p16),
+                    child: Wrap(
+                      spacing: AppSizes.p8,
+                      runSpacing: AppSizes.p8,
+                      children: [
+                        FilterChip(
+                          selected: filter.unreadOnly,
+                          label: const Text('Unread Only'),
+                          onSelected: filterNotifier.setUnreadOnly,
+                        ),
+                        ChoiceChip(
+                          selected: filter.category == null,
+                          label: const Text('All Categories'),
+                          onSelected: (_) => filterNotifier.setCategory(null),
+                        ),
+                        ...NotificationCategory.values.map((category) {
+                          return ChoiceChip(
+                            selected: filter.category == category,
+                            label: Text(_enumLabel(category.name)),
+                            onSelected: (_) => filterNotifier.setCategory(category),
+                          );
+                        }),
+                      ],
                     ),
-                    ChoiceChip(
-                      selected: filter.category == null,
-                      label: const Text('All Categories'),
-                      onSelected: (_) => filterNotifier.setCategory(null),
-                    ),
-                    ...NotificationCategory.values.map((category) {
-                      return ChoiceChip(
-                        selected: filter.category == category,
-                        label: Text(_enumLabel(category.name)),
-                        onSelected: (_) => filterNotifier.setCategory(category),
-                      );
-                    }),
-                  ],
+                  ),
                 ),
-              ),
-              AppSizes.gapH12,
-              Expanded(child: _buildNotificationsList()),
-            ],
+                SliverToBoxAdapter(child: const SizedBox(height: AppSizes.p12)),
+              ];
+            },
+            body: _buildNotificationsList(),
           ),
           _buildRemindersList(),
         ],
@@ -696,6 +687,64 @@ class _NotificationSection {
 
   final String label;
   final List<AppNotification> items;
+}
+
+class _SearchBarHeader extends SliverPersistentHeaderDelegate {
+  _SearchBarHeader({
+    required this.searchController,
+    required this.query,
+    required this.onQueryChanged,
+    required this.onQueryCleared,
+  });
+
+  final TextEditingController searchController;
+  final String query;
+  final ValueChanged<String> onQueryChanged;
+  final VoidCallback onQueryCleared;
+
+  @override
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      color: Theme.of(context).scaffoldBackgroundColor,
+      padding: const EdgeInsets.fromLTRB(
+        AppSizes.p16,
+        AppSizes.p12,
+        AppSizes.p16,
+        AppSizes.p12,
+      ),
+      alignment: Alignment.center,
+      child: Material(
+        elevation: overlapsContent ? 1 : 0,
+        borderRadius: BorderRadius.circular(AppSizes.r16),
+        color: Theme.of(context).cardColor,
+        child: TextField(
+          controller: searchController,
+          decoration: InputDecoration(
+            hintText: 'Search notifications...',
+            prefixIcon: const Icon(Icons.search),
+            suffixIcon: query.isEmpty
+                ? null
+                : IconButton(
+                    icon: const Icon(Icons.clear),
+                    onPressed: onQueryCleared,
+                  ),
+            border: InputBorder.none,
+            contentPadding: const EdgeInsets.symmetric(horizontal: AppSizes.p12),
+          ),
+          onChanged: onQueryChanged,
+        ),
+      ),
+    );
+  }
+
+  @override
+  double get maxExtent => 80;
+
+  @override
+  double get minExtent => 80;
+
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) => true;
 }
 
 class _EmptyBlock extends StatelessWidget {

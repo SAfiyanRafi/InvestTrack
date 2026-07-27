@@ -138,7 +138,11 @@ class _BusinessDetailsScreenState extends ConsumerState<BusinessDetailsScreen> {
 
         return Scaffold(
           appBar: AppBar(
-            title: Text(currentBusiness.name),
+            title: Text(
+              currentBusiness.name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
             actions: [
               IconButton(
                 icon: const Icon(Icons.edit),
@@ -170,10 +174,14 @@ class _BusinessDetailsScreenState extends ConsumerState<BusinessDetailsScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              currentBusiness.name,
-                              style: theme.textTheme.headlineMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
+                            Expanded(
+                              child: Text(
+                                currentBusiness.name,
+                                style: theme.textTheme.headlineMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                             Container(

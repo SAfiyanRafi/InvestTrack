@@ -69,9 +69,9 @@ class Reminder {
 
   bool archived = false;
 
-  late DateTime createdAt;
+  DateTime createdAt = DateTime.now();
 
-  late DateTime updatedAt;
+  DateTime updatedAt = DateTime.now();
 
   DateTime? completedAt;
 
